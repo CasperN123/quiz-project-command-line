@@ -9,12 +9,18 @@
 import Foundation
 
 var benjaDownloading = 0;
+let savage = false
+var
 
 
 
 
 
 
+if (savage != true) {
+    
+    print("øasadsadlasjndajksdbsahdbaisdbasb dhb")
+}
 
 
 
