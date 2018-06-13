@@ -345,7 +345,21 @@ class Scoreboard {
     var userIdTable: [Int] = []
 
     func SummarizeScores() {
-        // Add data from db together here
+        // List quizes
+        database.FindQuiz();
+        // User choose quiz - implemented in FindQuiz?
+        
+        // Get quizID from selected quiz
+        
+        // Find userAnswers related to quizId in database
+        
+        // Find questions related to quiz
+        
+            // 1. For each question compared to correct answer and userAnswers - find points.  2. Make an array of users that took quiz.
+        
+       
+        // If an answer that user made was correct - increment that users "temporary point . array ?
+        // Sort point array samtidig med bruger temp array - find top 10 ?
     }
 }
 
