@@ -15,36 +15,36 @@ class Question {
     
     private var questionId : Int
     private var quizId : Quiz
-    private var correctAnwserId : Int
-    private var anwsers : [String]
+    private var correctAnswerId : Int
+    private var answers : [String]
     
     
     
     // Functions for Question class
     
-    func ListAnwsers(<#parameters#>) -> <#return type#> {
+    func ListAnswers(<#parameters#>) -> <#return type#> {
         <#function body#>
     }
     
-    func EditAnwsers(<#parameters#>) -> <#return type#> {
+    func EditAnswers(<#parameters#>) -> <#return type#> {
         <#function body#>
     }
     
-    func createAnwsers() -> [QuizTable] {
+    func createAnswers() -> [QuizTable] {
         <#function body#>
     }
     
-    func ChooseCorrectAnwser(<#parameters#>) -> <#return type#> {
+    func ChooseCorrectAnswer(<#parameters#>) -> <#return type#> {
         <#function body#>
     }
     
     // Initializer for Question class
     
-    init(questionId: Int, correctAnwserId: Int, anwser: [String]) {
+    init(questionId: Int, correctAnswerId: Int, answer: [String]) {
         
         self.questionId = questionId
       
-        self.correctAnwserId = correctAnwserId
+        self.correctAnwswerId = correctAnswerId
     }
     
 }
@@ -60,7 +60,7 @@ class Quiz {
     private var description : String
     private var creator : user
     private var isQuestionsRandom : Bool
-    private var minimumToAnwser : Int
+    private var minimumToAnswer : Int
     
     
     
@@ -96,6 +96,16 @@ class Quiz {
     
     func DeleteQuestion(<#parameters#>) -> <#return type#> {
         <#function body#>
+    }
+    
+    init(quizId: Int, title: String, description: String, creator: user, isQuestionRandom: Bool, minimumToAnswer: Int) {
+        
+        self.quizId = quizId
+        self.title = title
+        self.description = description
+        self.creator = creator
+        self.isQuestionsRandom = isQuestionsRandom
+        self.minimumToAnswser = minimumToAnswer
     }
 }
 
