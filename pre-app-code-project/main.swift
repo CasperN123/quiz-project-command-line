@@ -8,20 +8,106 @@
 
 import Foundation
 
-var benjaDownloading = 0;
-let savage = false
-//var
 
-
-
-
-
-
-if (savage != true) {
+class Question {
     
-    print("øasadsadlasjndajksdbsahdbaisdbasb dhb")
+    // Private variables for Question class
+    
+    private var questionId : Int
+    private var quizId : Quiz
+    private var correctAnswerId : Int
+    private var answers : [String]
+    
+    
+    
+    // Functions for Question class
+    
+    func ListAnswers(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func EditAnswers(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func createAnswers() -> [QuizTable] {
+        <#function body#>
+    }
+    
+    func ChooseCorrectAnswer(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    // Initializer for Question class
+    
+    init(questionId: Int, correctAnswerId: Int, answer: [String]) {
+        
+        self.questionId = questionId
+      
+        self.correctAnwswerId = correctAnswerId
+    }
+    
 }
 
+
+class Quiz {
+    
+    
+    // Private variables for Quiz class
+    
+    private var quizId : Int
+    private var title : String
+    private var description : String
+    private var creator : user
+    private var isQuestionsRandom : Bool
+    private var minimumToAnswer : Int
+    
+    
+    
+    // Functions for Quiz class
+    
+    func QuizMenu(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func StartQuiz(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func ShowScoreBoard(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func ListQuestions(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func ChangeQuestionOrder(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func EditQuestion(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func CreateQuestion(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func DeleteQuestion(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    init(quizId: Int, title: String, description: String, creator: user, isQuestionRandom: Bool, minimumToAnswer: Int) {
+        
+        self.quizId = quizId
+        self.title = title
+        self.description = description
+        self.creator = creator
+        self.isQuestionsRandom = isQuestionsRandom
+        self.minimumToAnswser = minimumToAnswer
+    }
+}
 
 
 
