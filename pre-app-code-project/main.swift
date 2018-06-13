@@ -292,14 +292,35 @@ class Quiz{
     //Dummy class to avoid errors
 }
 
+class Question{
+    //Dummy class to avoid errors
+}
+
+class Answer{
+    //Dummy class to avoid errors
+    var answerId: Int;
+    var questionId: Int;
+    var answerText: String;
+    
+    init(questionId: Int, answerText: String){
+        self.questionId = questionId;
+        self.answerText = answerText;
+        self.answerId = database.answerTable.length;
+    }
+}
+
 
 
 /*-----------------* Database class -----------------*/
 
 class Database {
     
+    var quizTable = [Quiz];
+    var questionTable = [Question];
+    var answerTable = [Answer];
+    
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
-    var userCurrentId: Int = 0;
+    private var userCurrentId: Int = 0;
     
     /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
     func getNewUserId() -> Int {
@@ -308,11 +329,24 @@ class Database {
     }
     
     
+    /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
+    private var scoreBoardId: Int = 0;
+    
+    /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
+    func getScoreBoardId() -> Int {
+        self.scoreBoardId = self.scoreBoardId + 1;
+        return self.scoreBoardId;
+    }
+    
+    
 }
 
 var database: Database = Database();
 
+var newQuestion = Question();
+database.questionTable.append(newQuestion);
 
+var newAnswerA = Answer(questionId: 1, an)
 
 
 
@@ -326,6 +360,7 @@ class User {
     
     // Initializer used when creating a user with the function
     init(){
+        self.userId = database.getNewUserId();
         // Values to properties assigned afterwards
     }
     
