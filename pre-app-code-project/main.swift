@@ -664,6 +664,8 @@ class Interface {
     func ShowProfileCredentials(){
         print("Welcome to your profile: \(currentUser)")
         print("This is your connected e-mail: www.4head.com")
+        print("Current points: \(database.userPoints)")
+        
         print("Press any key to return to main manu...")
     }
     
