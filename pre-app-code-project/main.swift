@@ -68,6 +68,10 @@ class Quiz {
         return self.title;
     }
     
+    func getQuizId() -> Int{
+        return self.quizId;
+    }
+    
     init(title: String, description: String, creator: Int, isQuestionsRandom: Bool, minimumToAnswer: Int) {
         
         self.quizId = database.getNewQuizId();
@@ -241,6 +245,13 @@ class Database {
         return self.quizId;
     }
     
+    func FindQuiz(){
+        
+        print("The following quizes are in database");
+        for quiz in database.quizTable {
+            print(quiz.getQuizTitle());
+        }
+    }
     
 }
 
@@ -443,20 +454,6 @@ class Scoreboard {
 
 // Maria
 
-class Database {
-    
-    /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
-    var userCurrentId: Int = 0;
-    
-    /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
-    func getNewUserId() -> Int {
-        self.userCurrentId = self.userCurrentId + 1;
-        return self.userCurrentId;
-    }
-    
-    
-}
-
 
 
 
@@ -610,7 +607,7 @@ class Interface {
     
     func LoginUser(){
     
-    var loggingIn = true
+        var loggingIn = true
         
         while loggingIn == true {
             loginUsername()
@@ -621,7 +618,7 @@ class Interface {
             }
         }
     }
-}
+
     
     func CreateUser(){
         print("Please input username: ", terminator: "");
@@ -670,6 +667,8 @@ class Interface {
                 - Your choice:
                 """, terminator: " ");
             
+            
+            
             //Needs optional unwrapping ... let userInput = readLine()?.uppercased(); ... an alternative:
             let userInput = readLine();
             let userInputUC = userInput?.uppercased();
@@ -677,7 +676,7 @@ class Interface {
             switch userInputUC {
                 
             case "Q":
-                print("Starting program");
+                database.FindQuiz();
                 
             case "S":
                 print("Starting program");
@@ -697,6 +696,7 @@ class Interface {
             default:
                 print("Selection not recognized");
             }
+            
         }
     }
     
@@ -706,8 +706,8 @@ class Interface {
         self.userName = "";
         self.isUserLoggedIn = false;
     }
-}
 
+}
 
 
 
