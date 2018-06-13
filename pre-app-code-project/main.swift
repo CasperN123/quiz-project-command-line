@@ -98,7 +98,23 @@ if (savage != true) {
 
 
 
-//
+// Benjamin
+
+class Scoreboard {
+    init(boardId: Int, quizId: Int) {
+        self.boardId = boardId;
+        self.quizId = quizId;
+    }
+    
+    let boardId: Int;
+    let quizId: Int;
+    var pointTable: [Int] = []
+    var userIdTable: [Int] = []
+
+    func SummarizeScores() {
+        // Add data from db together here
+    }
+}
 
 
 
@@ -219,6 +235,13 @@ class Database {
     func getNewUserId() -> Int {
         self.userCurrentId = self.userCurrentId + 1;
         return self.userCurrentId;
+    }
+    
+    private var scoreBoardId: Int = 0;
+    
+    func getScoreBoardId() -> Int {
+        self.scoreBoardId = self.scoreBoardId + 1;
+        return self.scoreBoardId;
     }
 }
 
