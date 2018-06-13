@@ -18,7 +18,7 @@ class Quiz {
     private var quizId : Int
     private var title : String
     private var description : String
-    private var creator : user
+    private var creator : Int
     private var isQuestionsRandom : Bool
     private var minimumToAnswer : Int
     
@@ -58,9 +58,13 @@ class Quiz {
      <#function body#>
      }*/
     
-    init(quizId: Int, title: String, description: String, creator: user, isQuestionsRandom: Bool, minimumToAnswer: Int) {
+    func getQuizTitle() -> String{
+        return self.title;
+    }
+    
+    init(title: String, description: String, creator: Int, isQuestionsRandom: Bool, minimumToAnswer: Int) {
         
-        self.quizId = quizId
+        self.quizId = database.getNewQuizId();
         self.title = title
         self.description = description
         self.creator = creator
@@ -110,6 +114,15 @@ class Question {
         self.text = text
     }
     
+    func getQuizId() -> Int {
+        return self.quizId;
+    }
+    
+    
+    func getQuestion() -> String {
+        return self.text;
+    }
+    
 }
 
 
@@ -157,18 +170,24 @@ class Database {
     }
     
     
-   private var answerId: Int = 0;
+    private var answerId: Int = 0;
     
-   func getNewAnserId() -> Int {
+    func getNewAnserId() -> Int {
         self.answerId = self.answerId + 1;
         return self.answerId;
+    }
+    
+    private var quizId: Int = 0;
+    
+    func getNewQuizId() -> Int {
+        self.quizId = self.quizId + 1;
+        return self.quizId;
     }
     
     
 }
 
 var database: Database = Database();
-
 
 
 
@@ -412,21 +431,30 @@ class Interface {
     func ShowMenu(){
         
         
+        MakeQuestions();
+
+        
+        for i in database.quizTable {
+            print(i.getQuizTitle());
+        }
+        
+        for q in database.questionTable {
+            if(q.getQuizId() == 2){
+                print(q.getQuestion());
+            }
+        }
+        
+        for a in database.answerTable {
+            if(a.questionId == 2){
+                print(a.answerText);
+            }
+        }
         
         
         
-        var newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1");
-        database.questionTable.append(newQuestion);
         
-        var newAnswerA = Answer(questionId: 1, answerText: "1");
-        var newAnswerB = Answer(questionId: 1, answerText: "2");
-        var newAnswerC = Answer(questionId: 1, answerText: "3");
-        var newAnswerD = Answer(questionId: 1, answerText: "4");
         
-        database.answerTable.append(newAnswerA);
-        database.answerTable.append(newAnswerB);
-        database.answerTable.append(newAnswerC);
-        database.answerTable.append(newAnswerD);
+        
         
         
         
@@ -608,6 +636,45 @@ class Interface {
 }
 
 
+
+
+func MakeQuestions(){
+    
+    var newQuiz = Quiz(title: "Svære matematik regnestykker", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
+    database.quizTable.append(newQuiz);
+    
+    var newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1");
+    database.questionTable.append(newQuestion);
+    
+    var newAnswerA = Answer(questionId: 1, answerText: "1");
+    var newAnswerB = Answer(questionId: 1, answerText: "2");
+    var newAnswerC = Answer(questionId: 1, answerText: "3");
+    var newAnswerD = Answer(questionId: 1, answerText: "4");
+    
+    database.answerTable.append(newAnswerA);
+    database.answerTable.append(newAnswerB);
+    database.answerTable.append(newAnswerC);
+    database.answerTable.append(newAnswerD);
+    
+    
+    
+    var newQuiz2 = Quiz(title: "Svære matematik regnestykker 2", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
+    database.quizTable.append(newQuiz2);
+    
+    var newQuestion2 = Question(quizId: 2, correctAnswerId: 2, text: "Hvad er 2*10");
+    database.questionTable.append(newQuestion2);
+    
+    var newAnswerE = Answer(questionId: 2, answerText: "10");
+    var newAnswerF = Answer(questionId: 2, answerText: "20");
+    var newAnswerG = Answer(questionId: 2, answerText: "30");
+    var newAnswerH = Answer(questionId: 2, answerText: "40");
+    
+    database.answerTable.append(newAnswerE);
+    database.answerTable.append(newAnswerF);
+    database.answerTable.append(newAnswerG);
+    database.answerTable.append(newAnswerH);
+    
+}
 
 /// This creates and starts the program
 var main = Interface();
