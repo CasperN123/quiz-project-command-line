@@ -483,18 +483,66 @@ class Interface {
         print("Thank you for using CaBeMa");
     }
     
-    func LoginUser(){
+  
+    func loginUsername(){
         
-        print("Please type username");
-        print("Please type password");
+        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
+        let username = "savage"
+        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
+        var input = readLine()
+        print("Please type username: ");
         
-        var a = User();//Dummy return
-        self.currentUser = a;
+        if input == username {
+
+        }
+        
+        else {
+            if input != username {
+                print("Wrong username!")
+        }
     }
+}
+        
+    func loginPassword() {
+        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
+        let password = "savage"
+        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
+        var input = readLine()
+        print("Please type password: ");
+        
+        if input == password {
+            
+        }
+            
+        else {
+            if input != password {
+                print("Wrong password!")
+                
+        }
+    }
+}
+    
+    
+    func LoginUser(){
+    
+    var loggingIn = true
+        
+        while loggingIn == true {
+            
+            
+            loginUsername()
+            loginPassword()
+            
+         
+        }
+        
+            }
     
     func CreateUser(){
         print("Please input username", terminator: "");
         let username = readLine();
+        print("Please input password", terminator: "");
+        let password = readLine();
         let newUser = User();
         userDatabase.append(newUser);
         
