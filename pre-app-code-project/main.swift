@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 class Quiz {
     
     
@@ -66,6 +64,9 @@ class Quiz {
     
     func getQuizTitle() -> String{
         return self.title;
+    }
+    func GetQuizDescription() -> String{
+        return self.description;
     }
     
     func getQuizId() -> Int{
@@ -166,40 +167,47 @@ class Answer{
 
 
 
+
+
+
 class User {
-    private var userId: Int?;
-    private var userFirstName: String?;
+    private let userId: Int;
     
-    // Initializer used when creating a user with the function
-    init(){
-        self.userId = database.getNewUserId();
-        // Values to properties assigned afterwards
-    }
+    private var userFirstName: String;
+    private var userMiddleName: String?;
+    private var userLastName: String;
     
-    
+    private var userName: String;
+    private var eMail: String;
+    private var password: String;
     
     // Initializer used when creating a user with the function
     init(userFirstName: String){
         self.userId = database.getNewUserId();
+        
         self.userFirstName = userFirstName;
+        self.userMiddleName = "TODO";
+        self.userLastName = "TODO";
+        
+        self.userName = "TODO";
+        self.eMail = "TODO";
+        self.password = "TODO";
+        
         // Values to properties assigned afterwards
     }
     
-    
-    // Initializer used for auto creating some users
-    init(userId: Int, userFirstName: String){
-        self.userId = userId;
-        self.userFirstName = userFirstName;
-    }
-    
     func getUserId() -> Int {
-        return self.userId!; // TODO: Change this
+        return self.userId; // TODO: Change this
     }
     
     func getUserFirstName() -> String {
-        return self.userFirstName!; // TODO: Change this
+        return self.userFirstName; // TODO: Change this
     }
 }
+
+
+
+
 
 
 
@@ -245,88 +253,47 @@ class Database {
         return self.quizId;
     }
     
-    func FindQuiz(){
-        
+    
+    
+    
+    
+    
+    
+    
+    /// Show all of the quizes in the database
+    /// Return: quizId
+    func FindQuiz() -> Int?{
         print("The following quizes are in database");
+        print("Quiz number:\t\tQuiz title:\t\t\t\tQuiz description:");
         for quiz in database.quizTable {
-            print(quiz.getQuizTitle());
+            print("\(quiz.getQuizId())\t\t\t\t\(quiz.getQuizTitle())\t\t\t\t\(quiz.GetQuizDescription())\t\t");
+        }
+        
+        /// For controlling whether a database with the selected id exists
+        var correctInput = false;
+        while(!correctInput){
+            print("Please choose a quiz number or type 0 to abort:", terminator: " ");
+            if let userInput = readLine(), let userInt = Int(userInput){
+                
+                if(userInt == 0){
+                    return nil;
+                }
+                
+                /// Based on userInput - checks if a database with the Id exists
+                for quiz in database.quizTable{
+                    if(quiz.getQuizId() == userInt){
+                        
+                        /* Note regarding below: Since the loop will run until a correct input has been made, and the while loop will break at the return value, this boolean seems pointless - if it was not for the posibility to choose 0 and abort */
+                        correctInput = true;
+                        return userInt;
+                    }
+                }
+            }
         }
     }
-    
 }
 
 var database: Database = Database();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -346,7 +313,9 @@ class Scoreboard {
 
     func SummarizeScores() {
         // List quizes
-        database.FindQuiz();
+        if let quiz = database.FindQuiz(){
+            print(quiz)
+        }
         // User choose quiz - implemented in FindQuiz?
         
         // Get quizID from selected quiz
@@ -362,126 +331,6 @@ class Scoreboard {
         // Sort point array samtidig med bruger temp array - find top 10 ?
     }
 }
-
-
-
-
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Maria
-
-
-
-
-
-
-// Maria
-
-
-
-
-
-
-
-/*-----------------* User class -----------------*/
-
-
-
-
-
-
-
 
 
 
@@ -589,7 +438,7 @@ class Interface {
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
         while(!cUsername){
             print("Please type username: ");
-            var input = readLine()
+            let input = readLine()
                 
             if input == username {
                 cUsername = true
@@ -611,7 +460,7 @@ class Interface {
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
         while(!cPassword){
             print("Please type password: ");
-            var input = readLine()
+            let input = readLine()
             
             if input == password {
                 cPassword = true
@@ -659,13 +508,19 @@ class Interface {
     
     func CreateUser(){
         print("Please input username: ", terminator: "");
-        let username = readLine();
-        print("Please input password: ", terminator: "");
-        let password = readLine();
-        let newUser = User();
-        database.userTable.append(newUser);
-        
-        print("User has been created - please login");
+        if let username = readLine(){
+            
+            print("Please input password: ", terminator: "");
+            if let password = readLine(){
+            
+                let newUser = User(userFirstName: "Firsname-\(username)");
+                print(password);
+                
+                database.userTable.append(newUser);
+                
+                print("User has been created - please login");
+            }
+        }
     }
     
     
@@ -676,11 +531,13 @@ class Interface {
     
     
     func ShowProfileCredentials(){
-        print("Welcome to your profile: \(currentUser)")
-        print("This is your connected e-mail: www.4head.com")
-        print("Current points: \(database.userPoints)")
-        
-        print("Press any key to return to main manu...")
+        if let theCurrentUser = currentUser{
+            print("Welcome to your profile: \(theCurrentUser)")
+            print("This is your connected e-mail: www.4head.com")
+            print("Current points: \(database.userPoints)")
+            
+            print("Press any key to return to main manu...")
+        }
     }
     
     
@@ -688,69 +545,75 @@ class Interface {
     
     /// Shows the main menu
     func ShowMainMenu(){
-        while(!didUserQuit) {
-            print("""
-                \n\n\n
-                |--------------------------------|
-                | CaBeMa Quix, start menu        |
-                |--------------------------------|
-                | Letter | Function              |
-                |--------|-----------------------|
-                |    Q   | Go to quizes          |
-                |    S   | Go to scoreboards     |
-                |    U   | Go to user settings   |
-                |    A   | Profile               |
-                |    X   | Exit to main menu     |
-                |--------------------------------|
-                Logged in as: \(currentUser)
+        if let theCurrentUser = currentUser{
+            while(!didUserQuit) {
+                print("""
+                    \n\n\n
+                    |--------------------------------|
+                    | CaBeMa Quix, start menu        |
+                    |--------------------------------|
+                    | Letter | Function              |
+                    |--------|-----------------------|
+                    |    Q   | Go to quizes          |
+                    |    S   | Go to scoreboards     |
+                    |    U   | Go to user settings   |
+                    |    A   | Profile               |
+                    |    X   | Exit to main menu     |
+                    |--------------------------------|
+                    Logged in as: \(theCurrentUser)
+                    
+                    - Your choice:
+                    """, terminator: " ");
                 
-                - Your choice:
-                """, terminator: " ");
-            
-            
-            
-            //Needs optional unwrapping ... let userInput = readLine()?.uppercased(); ... an alternative:
-            let userInput = readLine();
-            let userInputUC = userInput?.uppercased();
-            
-            switch userInputUC {
                 
-            case "Q":
-                database.FindQuiz();
                 
-            case "S":
-                print("Starting program");
+                //Needs optional unwrapping ... let userInput = readLine()?.uppercased(); ... an alternative:
+                let userInput = readLine();
+                let userInputUC = userInput?.uppercased();
                 
-            case "U":
-                print("Starting program");
-                
-            case "A":
-                var loading = true
-                while loading == true {
-                    print("Fetching data /")
-                    usleep(500000)
-                    print("Fetching data -")
-                    usleep(500000)
-                    print("Fetching data \\")
-                    usleep(500000)
-                    print("Fetching data |")
-                    usleep(500000)
-           
-                  
-                    loading = false
+                switch userInputUC {
+                    
+                case "Q":
+                    if let chosenQuizId = database.FindQuiz(){
+                        print("Wow, the user selected a quiz with the id of: \(chosenQuizId)");
+                    }
+                    
+                case "S":
+                    print("Starting program");
+                    
+                case "U":
+                    print("Starting program");
+                    
+                case "A":
+                    var loading = true
+                    while loading == true {
+                        print("Fetching data /")
+                        usleep(500000)
+                        print("Fetching data -")
+                        usleep(500000)
+                        print("Fetching data \\")
+                        usleep(500000)
+                        print("Fetching data |")
+                        usleep(500000)
+               
+                      
+                        loading = false
+                    }
+                    ShowProfileCredentials()
+                    if let somethingThatDidNotHaveAVariableNameButNowHasAndIsUnwrapped = readLine(){
+                        print(somethingThatDidNotHaveAVariableNameButNowHasAndIsUnwrapped);
+                    }
+                    
+                /// Exits program
+                case "X":
+                    didUserQuit = false;
+                    self.Quit();
+                    
+                default:
+                    print("Selection not recognized");
                 }
-                ShowProfileCredentials()
-                readLine()
                 
-            /// Exits program
-            case "X":
-                didUserQuit = false;
-                self.Quit();
-                
-            default:
-                print("Selection not recognized");
             }
-            
         }
     }
     
@@ -767,16 +630,16 @@ class Interface {
 
 func MakeQuestions(){
     
-    var newQuiz = Quiz(title: "Svære matematik regnestykker", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
+    let newQuiz = Quiz(title: "Svære matematik regnestykker", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
     database.quizTable.append(newQuiz);
     
-    var newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1", points: 1);
+    let newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1", points: 1);
     database.questionTable.append(newQuestion);
     
-    var newAnswerA = Answer(questionId: 1, answerText: "1");
-    var newAnswerB = Answer(questionId: 1, answerText: "2");
-    var newAnswerC = Answer(questionId: 1, answerText: "3");
-    var newAnswerD = Answer(questionId: 1, answerText: "4");
+    let newAnswerA = Answer(questionId: 1, answerText: "1");
+    let newAnswerB = Answer(questionId: 1, answerText: "2");
+    let newAnswerC = Answer(questionId: 1, answerText: "3");
+    let newAnswerD = Answer(questionId: 1, answerText: "4");
     
     database.answerTable.append(newAnswerA);
     database.answerTable.append(newAnswerB);
@@ -785,16 +648,16 @@ func MakeQuestions(){
     
     
     
-    var newQuiz2 = Quiz(title: "Svære matematik regnestykker 2", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
+    let newQuiz2 = Quiz(title: "Svære matematik regnestykker 2", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
     database.quizTable.append(newQuiz2);
     
-    var newQuestion2 = Question(quizId: 2, correctAnswerId: 2, text: "Hvad er 2*10", points: 1);
+    let newQuestion2 = Question(quizId: 2, correctAnswerId: 2, text: "Hvad er 2*10", points: 1);
     database.questionTable.append(newQuestion2);
     
-    var newAnswerE = Answer(questionId: 2, answerText: "KappaPride");
-    var newAnswerF = Answer(questionId: 2, answerText: "20");
-    var newAnswerG = Answer(questionId: 2, answerText: "4Head");
-    var newAnswerH = Answer(questionId: 2, answerText: "NoT tHiS oNe");
+    let newAnswerE = Answer(questionId: 2, answerText: "KappaPride");
+    let newAnswerF = Answer(questionId: 2, answerText: "20");
+    let newAnswerG = Answer(questionId: 2, answerText: "4Head");
+    let newAnswerH = Answer(questionId: 2, answerText: "NoT tHiS oNe");
     
     database.answerTable.append(newAnswerE);
     database.answerTable.append(newAnswerF);
@@ -826,6 +689,8 @@ func MakeUsers(){
 var main = Interface();
 
 
+
+var tempUsers: [String] = [""];
 
 
 
