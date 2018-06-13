@@ -567,6 +567,7 @@ class Interface {
             case "X":
                 self.Quit();
                 
+            
             default:
                 print("Selection not recognized");
             }
@@ -627,7 +628,29 @@ class Interface {
             loginUsername()
             
             if(loginPassword()){
-                loggingIn=false
+                var loading = true
+                while loading == true {
+                    print("Logging in... / \r")
+                    usleep(500000)
+                    print("Logging in... - \r")
+                    usleep(500000)
+                    print("Logging in... \\ \r")
+                    usleep(500000)
+                    print("Logging in... | \r")
+                    usleep(500000)
+                    print("Logging in... / \r")
+                    usleep(500000)
+                    print("Logging in... - \r")
+                    usleep(500000)
+                    print("Logging in... \\ \r")
+                    usleep(500000)
+                    print("Logging in... | \r")
+                    usleep(500000)
+                    
+                    
+                    loggingIn=false
+                    loading = false
+                }
                 ShowMainMenu()
             }
         }
@@ -655,6 +678,9 @@ class Interface {
     func ShowProfileCredentials(){
         print("Welcome to your profile: \(currentUser)")
         print("This is your connected e-mail: www.4head.com")
+        print("Current points: \(database.userPoints)")
+        
+        print("Press any key to return to main manu...")
     }
     
     
@@ -676,7 +702,7 @@ class Interface {
                 |    A   | Profile               |
                 |    X   | Exit to main menu     |
                 |--------------------------------|
-                Logged in as: savage
+                Logged in as: \(currentUser)
                 
                 - Your choice:
                 """, terminator: " ");
@@ -699,8 +725,22 @@ class Interface {
                 print("Starting program");
                 
             case "A":
+                var loading = true
+                while loading == true {
+                    print("Fetching data /")
+                    usleep(500000)
+                    print("Fetching data -")
+                    usleep(500000)
+                    print("Fetching data \\")
+                    usleep(500000)
+                    print("Fetching data |")
+                    usleep(500000)
+           
+                  
+                    loading = false
+                }
                 ShowProfileCredentials()
-                sleep(3)
+                readLine()
                 
             /// Exits program
             case "X":
