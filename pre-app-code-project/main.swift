@@ -553,6 +553,9 @@ class Interface {
             case "X":
                 self.Quit();
                 
+            case ENTER?:
+                print("Why did you press enter?")
+                
             default:
                 print("Selection not recognized");
             }
