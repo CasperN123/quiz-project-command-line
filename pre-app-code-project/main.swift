@@ -144,6 +144,37 @@ class Answer{
 
 
 
+
+
+class User {
+    var userId: Int?;
+    var userFirstName: String?;
+    
+    // Initializer used when creating a user with the function
+    init(){
+        self.userId = database.getNewUserId();
+        // Values to properties assigned afterwards
+    }
+    
+    
+    
+    // Initializer used when creating a user with the function
+    init(userFirstName: String){
+        self.userId = database.getNewUserId();
+        self.userFirstName = userFirstName;
+        // Values to properties assigned afterwards
+    }
+    
+    
+    // Initializer used for auto creating some users
+    init(userId: Int, userFirstName: String){
+        self.userId = userId;
+        self.userFirstName = userFirstName;
+    }
+}
+
+
+
 /*-----------------* Database class -----------------*/
 
 class Database {
@@ -151,6 +182,7 @@ class Database {
     var quizTable: [Quiz] = [];
     var questionTable: [Question] = [];
     var answerTable: [Answer] = [];
+    var userTable: [User] = [];
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
@@ -379,24 +411,6 @@ var database: Database = Database();
 
 /*-----------------* User class -----------------*/
 
-class User {
-    var userId: Int?;
-    var userFirstName: String?;
-    
-    // Initializer used when creating a user with the function
-    init(){
-        self.userId = database.getNewUserId();
-        // Values to properties assigned afterwards
-    }
-    
-    // Initializer used for auto creating some users
-    init(userId: Int, userFirstName: String){
-        self.userId = userId;
-        self.userFirstName = userFirstName;
-    }
-}
-
-var userDatabase: [User] = [];
 
 
 
@@ -439,20 +453,20 @@ class Interface {
         }
         
         for q in database.questionTable {
-            if(q.getQuizId() == 2){
+            if(q.getQuizId() == 1){
                 print(q.getQuestion());
             }
         }
         
         for a in database.answerTable {
-            if(a.questionId == 2){
+            if(a.questionId == 1){
                 print(a.answerText);
             }
         }
         
         
         
-        
+        MakeUsers();
         
         
         
@@ -527,9 +541,9 @@ class Interface {
         else {
             if input != username {
                 print("Wrong username!")
+            }
         }
     }
-}
         
     func loginPassword() {
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
@@ -546,9 +560,9 @@ class Interface {
             if input != password {
                 print("Wrong password!")
                 
+            }
         }
     }
-}
     
     
     func LoginUser(){
@@ -564,7 +578,7 @@ class Interface {
          
         }
         
-            }
+    }
     
     func CreateUser(){
         print("Please input username", terminator: "");
@@ -572,7 +586,7 @@ class Interface {
         print("Please input password", terminator: "");
         let password = readLine();
         let newUser = User();
-        userDatabase.append(newUser);
+        database.userTable.append(newUser);
         
         print("User has been created - please login");
     }
@@ -673,6 +687,24 @@ func MakeQuestions(){
     database.answerTable.append(newAnswerF);
     database.answerTable.append(newAnswerG);
     database.answerTable.append(newAnswerH);
+    
+}
+
+
+
+func MakeUsers(){
+    var a = User(userFirstName: "Maria");
+    database.userTable.append(a);
+    
+    a = User(userFirstName: "Benjamin");
+    database.userTable.append(a);
+    
+    a = User(userFirstName: "Casper");
+    database.userTable.append(a);
+    
+    for i in database.userTable{
+        print(i.userFirstName);
+    }
     
 }
 
