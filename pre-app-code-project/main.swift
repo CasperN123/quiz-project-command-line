@@ -543,20 +543,31 @@ class Interface {
     }
 
     
-    
+    // Temple of DOOM user creation
     func CreateUser(){
         print("Please input username: ", terminator: "");
         if let username = readLine(){
-            print(username);
             print("Please input password: ", terminator: "");
             if let password = readLine(){
+                print("Please input first name: ", terminator: "");
+                if let firstName = readLine(){
+                    print("Please input middle name (not required): ", terminator: "");
+                    if let middleName = readLine(){
+                        print("Please input last name: ", terminator: "");
+                        if let LastName = readLine(){
+                            print("Please input e-mail: ", terminator: "");
+                            if let eMail = readLine(){
+                                    
+                                let newUser = User(userFirstName: firstName, userMiddleName: middleName, userLastName: LastName, userName: username, eMail: eMail, password: password);
+                                database.userTable.append(newUser);
             
-//                let newUser = User(userFirstName: "Firsname-\(username)");
-                print(password);
-                
-  //              database.userTable.append(newUser);
-                
-                print("User has been created - please login");
+                                print("\n\n\nUser has been created - please login");
+                                let _ = readLine();
+                            
+                            }
+                        }
+                    }
+                }
             }
         }
     }
