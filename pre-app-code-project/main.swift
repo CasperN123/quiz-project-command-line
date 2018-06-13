@@ -129,7 +129,6 @@ class Question {
 /*-----------------* Quiz class -----------------*/
 
 class Answer{
-    //Dummy class to avoid errors
     var answerId: Int;
     var questionId: Int;
     var answerText: String;
@@ -137,7 +136,7 @@ class Answer{
     init(questionId: Int, answerText: String){
         self.questionId = questionId;
         self.answerText = answerText;
-        self.answerId = database.getNewAnserId();
+        self.answerId = database.getNewAnswerId();
         
     }
 }
@@ -147,8 +146,8 @@ class Answer{
 
 
 class User {
-    var userId: Int?;
-    var userFirstName: String?;
+    private var userId: Int?;
+    private var userFirstName: String?;
     
     // Initializer used when creating a user with the function
     init(){
@@ -170,6 +169,14 @@ class User {
     init(userId: Int, userFirstName: String){
         self.userId = userId;
         self.userFirstName = userFirstName;
+    }
+    
+    func getUserId() -> Int {
+        return self.userId!; // TODO: Change this
+    }
+    
+    func getUserFirstName() -> String {
+        return self.userFirstName!; // TODO: Change this
     }
 }
 
@@ -204,7 +211,7 @@ class Database {
     
     private var answerId: Int = 0;
     
-    func getNewAnserId() -> Int {
+    func getNewAnswerId() -> Int {
         self.answerId = self.answerId + 1;
         return self.answerId;
     }
@@ -493,20 +500,7 @@ class Interface {
             }
         }
         
-        
-        
         MakeUsers();
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         while(!didUserQuit) {
 
@@ -574,15 +568,9 @@ class Interface {
                     print("Wrong username!")
             }
         }
-        
-        else {
-            if input != username {
-                print("Wrong username!")
-            }
-        }
     }
         
-    func loginPassword() -> Bool{
+    func loginPassword() -> Bool {
         
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
         var cPassword = false
@@ -596,32 +584,21 @@ class Interface {
                 cPassword = true
                 return true;
             }
-                
-            }
         }
     }
-    
     
     func LoginUser(){
     
     var loggingIn = true
         
         while loggingIn == true {
-            
-            
-            
             loginUsername()
             
             if(loginPassword()){
                 loggingIn=false
                 ShowMainMenu()
             }
-            
-            
-            
-         
         }
-        
     }
     
     func CreateUser(){
@@ -763,7 +740,7 @@ func MakeUsers(){
     database.userTable.append(a);
     
     for i in database.userTable{
-        print(i.userFirstName);
+        print(i.getUserFirstName());
     }
     
 }
