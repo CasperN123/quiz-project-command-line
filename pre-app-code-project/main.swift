@@ -515,37 +515,44 @@ class Interface {
     func loginUsername(){
         
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
+        var cUsername = false
         let username = "savage"
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
-        var input = readLine()
-        print("Please type username: ");
-        
-        if input == username {
-
-        }
-        
-        else {
-            if input != username {
-                print("Wrong username!")
+        while(!cUsername){
+            print("Please type username: ");
+            var input = readLine()
+            
+            if input == username {
+                cUsername = true
+            }
+            
+            else {
+                if input != username {
+                    print("Wrong username!")
+            }
         }
     }
 }
         
-    func loginPassword() {
+    func loginPassword() -> Bool{
+        
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
+        var cPassword = false
         let password = "savage"
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
-        var input = readLine()
-        print("Please type password: ");
-        
-        if input == password {
+        while(!cPassword){
+            print("Please type password: ");
+            var input = readLine()
             
-        }
-            
-        else {
-            if input != password {
-                print("Wrong password!")
+            if input == password {
+                cPassword = true
+                return true;
+            }
                 
+            else {
+                if input != password {
+                    print("Wrong password!")
+            }
         }
     }
 }
@@ -558,8 +565,15 @@ class Interface {
         while loggingIn == true {
             
             
+            
             loginUsername()
-            loginPassword()
+            
+            if(loginPassword()){
+                loggingIn=false
+                ShowMainMenu()
+            }
+            
+            
             
          
         }
@@ -584,6 +598,11 @@ class Interface {
     }
     
     
+    func ShowProfileCredentials(){
+        print("Welcome to your profile: \(userName)")
+        print("This is your connected e-mail: www.4head.com")
+    }
+    
     
     
     
@@ -600,6 +619,7 @@ class Interface {
                 |    Q   | Go to quizes          |
                 |    S   | Go to scoreboards     |
                 |    U   | Go to user settings   |
+                |    A   | Profile               |
                 |    X   | Exit to main menu     |
                 |--------------------------------|
                 Logged in as: \(self.userName)
@@ -613,8 +633,18 @@ class Interface {
             
             switch userInputUC {
                 
+            case "Q":
+                print("Starting program");
+                
             case "S":
                 print("Starting program");
+                
+            case "U":
+                print("Starting program");
+                
+            case "A":
+                ShowProfileCredentials()
+                sleep(3)
                 
             /// Exits program
             case "X":
