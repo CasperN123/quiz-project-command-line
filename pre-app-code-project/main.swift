@@ -8,18 +8,39 @@
 
 import Foundation
 
-var benjaDownloading = 0;
-let savage = false
-//var
 
-
-
-
-
-
-if (savage != true) {
+class Question {
     
-    print("øasadsadlasjndajksdbsahdbaisdbasb dhb")
+    private var questionId : Int
+    private var quizId : Quiz
+    private var correctAnwserId : Int
+    private var anwsers : [String]
+    
+    
+    
+    func ListAnwsers(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func EditAnwsers(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func createAnwsers() -> [QuizTable] {
+        <#function body#>
+    }
+    
+    func ChooseCorrectAnwser(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    init(questionId: Int, quizId: Quiz, correctAnwserId: Int, anwser: [String]) {
+        
+        self.questionId = questionId
+      
+        self.correctAnwserId = correctAnwserId
+    }
+    
 }
 
 
@@ -220,6 +241,8 @@ class Database {
         self.userCurrentId = self.userCurrentId + 1;
         return self.userCurrentId;
     }
+    
+    
 }
 
 var database: Database = Database();
