@@ -21,11 +21,17 @@ class Quiz {
     private var creator : Int
     private var isQuestionsRandom : Bool
     private var minimumToAnswer : Int
+  
     
     
     
     // Functions for Quiz class
+    
+    
     /*
+     
+     
+     
      func QuizMenu(<#parameters#>) -> <#return type#> {
      <#function body#>
      }
@@ -83,10 +89,20 @@ class Question {
     private var quizId : Int
     private var correctAnswerId : Int
     private var text : String
-    
+    var points : Int
     
     
     // Functions for Question class
+    
+    func Points() {
+        
+        if correctAnswerId == quizId {
+            
+            points += 1
+            
+        }
+    }
+    
     /*
      func ListAnswers() -> <#return type#> {
      <#function body#>
@@ -106,12 +122,13 @@ class Question {
     
     // Initializer for Question class
     
-    init(quizId: Int, correctAnswerId: Int, text: String) {
+    init(quizId: Int, correctAnswerId: Int, text: String, points: Int) {
         
         self.questionId = database.getNewUserId();
         self.quizId = quizId;
         self.correctAnswerId = correctAnswerId
         self.text = text
+        self.points = points
     }
     
     func getQuizId() -> Int {
@@ -183,6 +200,7 @@ class Database {
     var questionTable: [Question] = [];
     var answerTable: [Answer] = [];
     var userTable: [User] = [];
+    var userPoints: [Int] = []
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
@@ -439,6 +457,7 @@ class Interface {
     init(){
         print("Welcome to CaBeMa Quiz\nWe hope that you enjoy the quiz program");
         self.ShowMenu();
+        
     }
     
     /// Shows the main menu
@@ -521,12 +540,13 @@ class Interface {
     }
     
     func Quit(){
-        self.didUserQuit = true;
         print("Thank you for using CaBeMa");
+        self.didUserQuit = true;
+        
     }
     
   
-    func loginUsername(){
+    func loginUsername() {
         
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
         var cUsername = false
@@ -535,24 +555,19 @@ class Interface {
         while(!cUsername){
             print("Please type username: ");
             var input = readLine()
-            
+                
             if input == username {
                 cUsername = true
             }
-            
+                
             else {
                 if input != username {
                     print("Wrong username!")
-            }
-        }
-        
-        else {
-            if input != username {
-                print("Wrong username!")
+                }
             }
         }
     }
-        
+    
     func loginPassword() -> Bool{
         
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
@@ -565,8 +580,7 @@ class Interface {
             
             if input == password {
                 cPassword = true
-                return true;
-            }
+                return true
                 
             }
         }
@@ -586,19 +600,15 @@ class Interface {
             if(loginPassword()){
                 loggingIn=false
                 ShowMainMenu()
-            }
-            
-            
-            
-         
+               
         }
-        
     }
+}
     
     func CreateUser(){
-        print("Please input username", terminator: "");
+        print("Please input username: ", terminator: "");
         let username = readLine();
-        print("Please input password", terminator: "");
+        print("Please input password: ", terminator: "");
         let password = readLine();
         let newUser = User();
         database.userTable.append(newUser);
@@ -614,7 +624,7 @@ class Interface {
     
     
     func ShowProfileCredentials(){
-        print("Welcome to your profile: \(userName)")
+        print("Welcome to your profile: \(currentUser)")
         print("This is your connected e-mail: www.4head.com")
     }
     
@@ -637,7 +647,7 @@ class Interface {
                 |    A   | Profile               |
                 |    X   | Exit to main menu     |
                 |--------------------------------|
-                Logged in as: \(self.userName)
+                Logged in as: savage
                 
                 - Your choice:
                 """, terminator: " ");
@@ -663,7 +673,7 @@ class Interface {
                 
             /// Exits program
             case "X":
-                didUserQuit = true;
+                didUserQuit = false;
                 self.Quit();
                 
             default:
@@ -688,7 +698,7 @@ func MakeQuestions(){
     var newQuiz = Quiz(title: "Svære matematik regnestykker", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
     database.quizTable.append(newQuiz);
     
-    var newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1");
+    var newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1", points: 1);
     database.questionTable.append(newQuestion);
     
     var newAnswerA = Answer(questionId: 1, answerText: "1");
@@ -706,13 +716,13 @@ func MakeQuestions(){
     var newQuiz2 = Quiz(title: "Svære matematik regnestykker 2", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
     database.quizTable.append(newQuiz2);
     
-    var newQuestion2 = Question(quizId: 2, correctAnswerId: 2, text: "Hvad er 2*10");
+    var newQuestion2 = Question(quizId: 2, correctAnswerId: 2, text: "Hvad er 2*10", points: 1);
     database.questionTable.append(newQuestion2);
     
-    var newAnswerE = Answer(questionId: 2, answerText: "10");
+    var newAnswerE = Answer(questionId: 2, answerText: "KappaPride");
     var newAnswerF = Answer(questionId: 2, answerText: "20");
-    var newAnswerG = Answer(questionId: 2, answerText: "30");
-    var newAnswerH = Answer(questionId: 2, answerText: "40");
+    var newAnswerG = Answer(questionId: 2, answerText: "4Head");
+    var newAnswerH = Answer(questionId: 2, answerText: "NoT tHiS oNe");
     
     database.answerTable.append(newAnswerE);
     database.answerTable.append(newAnswerF);
@@ -736,6 +746,7 @@ func MakeUsers(){
     for i in database.userTable{
         print(i.userFirstName);
     }
+
     
 }
 
