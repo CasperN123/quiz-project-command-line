@@ -11,12 +11,16 @@ import Foundation
 
 class Question {
     
+    // Private variables for Question class
+    
     private var questionId : Int
     private var quizId : Quiz
     private var correctAnwserId : Int
     private var anwsers : [String]
     
     
+    
+    // Functions for Question class
     
     func ListAnwsers(<#parameters#>) -> <#return type#> {
         <#function body#>
@@ -34,7 +38,9 @@ class Question {
         <#function body#>
     }
     
-    init(questionId: Int, quizId: Quiz, correctAnwserId: Int, anwser: [String]) {
+    // Initializer for Question class
+    
+    init(questionId: Int, correctAnwserId: Int, anwser: [String]) {
         
         self.questionId = questionId
       
@@ -43,6 +49,55 @@ class Question {
     
 }
 
+
+class Quiz {
+    
+    
+    // Private variables for Quiz class
+    
+    private var quizId : Int
+    private var title : String
+    private var description : String
+    private var creator : user
+    private var isQuestionsRandom : Bool
+    private var minimumToAnwser : Int
+    
+    
+    
+    // Functions for Quiz class
+    
+    func QuizMenu(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func StartQuiz(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func ShowScoreBoard(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func ListQuestions(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func ChangeQuestionOrder(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func EditQuestion(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func CreateQuestion(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+    
+    func DeleteQuestion(<#parameters#>) -> <#return type#> {
+        <#function body#>
+    }
+}
 
 
 
