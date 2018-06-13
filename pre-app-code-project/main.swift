@@ -146,7 +146,6 @@ class Question {
 /*-----------------* Quiz class -----------------*/
 
 class Answer{
-    //Dummy class to avoid errors
     var answerId: Int;
     var questionId: Int;
     var answerText: String;
@@ -154,7 +153,7 @@ class Answer{
     init(questionId: Int, answerText: String){
         self.questionId = questionId;
         self.answerText = answerText;
-        self.answerId = database.getNewAnserId();
+        self.answerId = database.getNewAnswerId();
         
     }
 }
@@ -164,8 +163,8 @@ class Answer{
 
 
 class User {
-    var userId: Int?;
-    var userFirstName: String?;
+    private var userId: Int?;
+    private var userFirstName: String?;
     
     // Initializer used when creating a user with the function
     init(){
@@ -187,6 +186,14 @@ class User {
     init(userId: Int, userFirstName: String){
         self.userId = userId;
         self.userFirstName = userFirstName;
+    }
+    
+    func getUserId() -> Int {
+        return self.userId!; // TODO: Change this
+    }
+    
+    func getUserFirstName() -> String {
+        return self.userFirstName!; // TODO: Change this
     }
 }
 
@@ -222,7 +229,7 @@ class Database {
     
     private var answerId: Int = 0;
     
-    func getNewAnserId() -> Int {
+    func getNewAnswerId() -> Int {
         self.answerId = self.answerId + 1;
         return self.answerId;
     }
@@ -313,19 +320,28 @@ var database: Database = Database();
 
 
 
+//
 
+class Scoreboard {
+    init(boardId: Int, quizId: Int) {
+        self.boardId = boardId;
+        self.quizId = quizId;
+    }
+    
+    let boardId: Int;
+    let quizId: Int;
+    var pointTable: [Int] = []
+    var userIdTable: [Int] = []
 
+    func SummarizeScores() {
+        // Add data from db together here
+    }
+}
 
 
 
 
 //
-
-
-
-
-
-
 
 
 
@@ -425,6 +441,26 @@ var database: Database = Database();
 
 
 
+// Maria
+
+class Database {
+    
+    /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
+    var userCurrentId: Int = 0;
+    
+    /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
+    func getNewUserId() -> Int {
+        self.userCurrentId = self.userCurrentId + 1;
+        return self.userCurrentId;
+    }
+    
+    
+}
+
+
+
+
+
 
 
 /*-----------------* User class -----------------*/
@@ -483,20 +519,7 @@ class Interface {
             }
         }
         
-        
-        
         MakeUsers();
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         while(!didUserQuit) {
 
@@ -567,8 +590,8 @@ class Interface {
             }
         }
     }
-    
-    func loginPassword() -> Bool{
+        
+    func loginPassword() -> Bool {
         
         // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
         var cPassword = false
@@ -580,27 +603,22 @@ class Interface {
             
             if input == password {
                 cPassword = true
-                return true
-                
+                return true;
             }
         }
     }
-    
     
     func LoginUser(){
     
     var loggingIn = true
         
         while loggingIn == true {
-            
-            
-            
             loginUsername()
             
             if(loginPassword()){
                 loggingIn=false
                 ShowMainMenu()
-               
+            }
         }
     }
 }
@@ -744,7 +762,7 @@ func MakeUsers(){
     database.userTable.append(a);
     
     for i in database.userTable{
-        print(i.userFirstName);
+        print(i.getUserFirstName());
     }
 
     
