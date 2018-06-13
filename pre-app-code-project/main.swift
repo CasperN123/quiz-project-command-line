@@ -173,7 +173,7 @@ class User {
     private let userId: Int;
     
     private var userFirstName: String;
-    private var userMiddleName: String?;
+    private var userMiddleName: String;
     private var userLastName: String;
     
     private var userName: String;
@@ -209,6 +209,14 @@ class User {
     
     func GetPassword() -> String{
         return self.password;
+    }
+    
+    func GetFullName() -> String{
+        return "\(self.userFirstName) \((self.userMiddleName != "") ? self.userMiddleName+" " : "")\(self.userLastName)";
+    }
+    
+    func GetUserEmail() -> String{
+        return self.eMail;
     }
 }
 
@@ -352,7 +360,7 @@ class Interface {
     /// - Used for alias names
     var userName: String = "";
     var didUserQuit: Bool = false;
-    var isUserLoggedIn: Bool = false;
+    var isAliasUserLoggedIn: Bool = false;
     
     init(){
         print("Welcome to CaBeMa Quiz\nWe hope that you enjoy the quiz program");
@@ -448,7 +456,7 @@ class Interface {
             let input = readLine()
             
             for user in database.userTable{
-                if user.GetUserName() == input{
+                if user.GetUserName().uppercased() == input?.uppercased(){
                     return user
                 }
             }
@@ -495,6 +503,7 @@ class Interface {
             
             if let userSelected = userLoggingIn{
                 if(loginPassword(user: userSelected)){
+                    currentUser = userSelected;
                     // TODO: @Casper, consider this:
                     /*
                      var loadingSymbol: [Character] = ["/", "-", "\\", "|", "/", "-", "\\", "|"];
@@ -555,19 +564,25 @@ class Interface {
     
     
     func LoginAlias(){
-        self.isUserLoggedIn = true;
-        self.userName = "Dummy account";
+        print("Please write your alias:", terminator: " ");
+        if let aliasUsername = readLine(){
+            self.isAliasUserLoggedIn = true;
+            self.userName = "Alias-"+aliasUsername;
+            self.currentUser = User(userFirstName: "", userMiddleName: "", userLastName: "", userName: "", eMail: "", password: "");
+            self.ShowMainMenu();
+        }
     }
     
     
     
     func ShowProfileCredentials(){
         if let theCurrentUser = currentUser{
-            print("Welcome to your profile: \(theCurrentUser)")
-            print("This is your connected e-mail: www.4head.com")
-            print("Current points: \(database.userPoints)")
-            
+            print("\n\n\n\nWelcome to your profile: \(theCurrentUser.GetUserName())")
+            print("FullName: \(theCurrentUser.GetFullName())")
+            print("This is your connected e-mail: \(theCurrentUser.GetUserEmail())")
+            print("Current points: TODO: Calculate HERE dynamically")
             print("Press any key to return to main manu...")
+            let _ = readLine();
         }
     }
 
@@ -575,8 +590,9 @@ class Interface {
     
     /// Shows the main menu
     func ShowMainMenu(){
+        var userInputUC = "";
         if let theCurrentUser = currentUser{
-            while(!didUserQuit) {
+            while(userInputUC != "X") {
                 print("""
                     \n\n\n
                     |--------------------------------|
@@ -586,11 +602,10 @@ class Interface {
                     |--------|-----------------------|
                     |    Q   | Go to quizes          |
                     |    S   | Go to scoreboards     |
-                    |    U   | Go to user settings   |
-                    |    A   | Profile               |
+                    |    U   | Go to user settings   |\(!self.isAliasUserLoggedIn ? "\n|    A   | Profile               |" : "" )
                     |    X   | Exit to main menu     |
                     |--------------------------------|
-                    Logged in as: \(theCurrentUser)
+                    Logged in as: \(theCurrentUser.GetUserName())
                     
                     - Your choice:
                     """, terminator: " ");
@@ -598,8 +613,9 @@ class Interface {
                 
                 
                 //Needs optional unwrapping ... let userInput = readLine()?.uppercased(); ... an alternative:
-                let userInput = readLine();
-                let userInputUC = userInput?.uppercased();
+                if let userInput = readLine(){
+                    userInputUC = userInput.uppercased();
+                }
                 
                 switch userInputUC {
                     
@@ -630,14 +646,11 @@ class Interface {
                         loading = false
                     }
                     ShowProfileCredentials()
-                    if let somethingThatDidNotHaveAVariableNameButNowHasAndIsUnwrapped = readLine(){
-                        print(somethingThatDidNotHaveAVariableNameButNowHasAndIsUnwrapped);
-                    }
                     
                 /// Exits program
                 case "X":
-                    didUserQuit = false;
-                    self.Quit();
+                    // Effectively signed out if choice is X through while loop
+                    self.isAliasUserLoggedIn = false;
                     
                 default:
                     print("Selection not recognized");
@@ -646,16 +659,6 @@ class Interface {
             }
         }
     }
-    
-    
-    
-    func Logout(){
-        // In case a user does a logout - reset these informations
-        self.currentUser = nil;
-        self.userName = "";
-        self.isUserLoggedIn = false;
-    }
-
 }
 
 
