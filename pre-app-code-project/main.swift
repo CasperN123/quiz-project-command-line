@@ -148,7 +148,6 @@ class Question {
 }
 
 
-/*-----------------* Quiz class -----------------*/
 
 class Answer{
     var answerId: Int;
@@ -182,16 +181,16 @@ class User {
     private var password: String;
     
     // Initializer used when creating a user with the function
-    init(userFirstName: String){
+    init(userFirstName: String, userMiddleName: String, userLastName: String, userName: String, eMail: String, password: String){
         self.userId = database.getNewUserId();
         
         self.userFirstName = userFirstName;
-        self.userMiddleName = "TODO";
-        self.userLastName = "TODO";
+        self.userMiddleName = userMiddleName;
+        self.userLastName = userLastName;
         
-        self.userName = "TODO";
-        self.eMail = "TODO";
-        self.password = "TODO";
+        self.userName = userName;
+        self.eMail = eMail;
+        self.password = password;
         
         // Values to properties assigned afterwards
     }
@@ -203,6 +202,14 @@ class User {
     func getUserFirstName() -> String {
         return self.userFirstName; // TODO: Change this
     }
+    
+    func GetUserName() -> String{
+        return self.userName;
+    }
+    
+    func GetPassword() -> String{
+        return self.password;
+    }
 }
 
 
@@ -211,7 +218,6 @@ class User {
 
 
 
-/*-----------------* Database class -----------------*/
 
 class Database {
     
@@ -334,11 +340,9 @@ class Scoreboard {
 
 
 
+/* Class seperator *******************************************************************************************/
 
 
-
-
-/*-----------------* Interface class -----------------*/
 
 /// The main interface which intiates the program
 class Interface {
@@ -356,13 +360,15 @@ class Interface {
         
     }
     
+    
+    
     /// Shows the main menu
     func ShowMenu(){
-        
-        
-        MakeQuestions();
 
         
+        
+        
+        /*
         for i in database.quizTable {
             print(i.getQuizTitle());
         }
@@ -378,8 +384,7 @@ class Interface {
                 print(a.answerText);
             }
         }
-        
-        MakeUsers();
+        */
         
         while(!didUserQuit) {
 
@@ -423,100 +428,124 @@ class Interface {
         }
     }
     
+    
+    
     func Quit(){
         print("Thank you for using CaBeMa");
         self.didUserQuit = true;
         
     }
     
+    
   
-    func loginUsername() {
+    func loginUsername() -> User?{
+        let userNameAttempts: Int = 3;
+        var currentUserNameAttempt: Int = 0;
         
-        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
-        var cUsername = false
-        let username = "savage"
-        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
-        while(!cUsername){
+        while(currentUserNameAttempt < userNameAttempts){
+            currentUserNameAttempt += 1;
             print("Please type username: ");
             let input = readLine()
-                
-            if input == username {
-                cUsername = true
-            }
-                
-            else {
-                if input != username {
-                    print("Wrong username!")
+            
+            for user in database.userTable{
+                if user.GetUserName() == input{
+                    return user
                 }
             }
+            
+            let triesLeft = userNameAttempts-currentUserNameAttempt;
+            print("Wrong username!\nYou have \(triesLeft>1 ? String(triesLeft)+" tries" : triesLeft>0 ? String(triesLeft)+" try" : "no tries") left\n")
+            
         }
+        return nil;
     }
+    
+    
+    
+    func loginPassword(user: User) -> Bool {
+        let loginAttempts: Int = 3;
+        var currentLoginAttempt: Int = 0;
         
-    func loginPassword() -> Bool {
-        
-        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
-        var cPassword = false
-        let password = "savage"
-        // TEMP USERNAME AND PASSWORD FOR DEBUGGING !!!
-        while(!cPassword){
+        while(currentLoginAttempt < loginAttempts){
+            currentLoginAttempt += 1;
             print("Please type password: ");
             let input = readLine()
             
-            if input == password {
-                cPassword = true
+            if input == user.GetPassword() {
                 return true;
+            } else {
+                let triesLeft = loginAttempts-currentLoginAttempt;
+                print("Wrong password!\nYou have \(triesLeft>1 ? String(triesLeft)+" tries" : triesLeft>0 ? String(triesLeft)+" try" : "no tries") left\n")
             }
         }
+        // If password is not guessed within three tries, then abort login
+        return false
     }
+    
+    
     
     func LoginUser(){
     
-        var loggingIn = true
-        
-        while loggingIn == true {
-            loginUsername()
+        var userLoggingIn: User?;
+        //var loggingIn = true
+        // I would suggest these commented out / removed - and implement control in login username / password
+        //while loggingIn == true {
             
-            if(loginPassword()){
-                var loading = true
-                while loading == true {
-                    print("Logging in... / \r")
-                    usleep(500000)
-                    print("Logging in... - \r")
-                    usleep(500000)
-                    print("Logging in... \\ \r")
-                    usleep(500000)
-                    print("Logging in... | \r")
-                    usleep(500000)
-                    print("Logging in... / \r")
-                    usleep(500000)
-                    print("Logging in... - \r")
-                    usleep(500000)
-                    print("Logging in... \\ \r")
-                    usleep(500000)
-                    print("Logging in... | \r")
-                    usleep(500000)
-                    
-                    
-                    loggingIn=false
-                    loading = false
+            userLoggingIn = loginUsername()
+            
+            if let userSelected = userLoggingIn{
+                if(loginPassword(user: userSelected)){
+                    // TODO: @Casper, consider this:
+                    /*
+                     var loadingSymbol: [Character] = ["/", "-", "\\", "|", "/", "-", "\\", "|"];
+                     for symbol in loadingSymbol{
+                        print("Logging in... \(symbol)");
+                     usleep(500_000);
+                     loggingIn=false
+                     }
+                     */
+                    var loading = true
+                    while loading == true {
+                        print("Logging in... / \r")
+                        usleep(500000)
+                        print("Logging in... - \r")
+                        usleep(500000)
+                        print("Logging in... \\ \r")
+                        usleep(500000)
+                        print("Logging in... | \r")
+                        usleep(500000)
+                        print("Logging in... / \r")
+                        usleep(500000)
+                        print("Logging in... - \r")
+                        usleep(500000)
+                        print("Logging in... \\ \r")
+                        usleep(500000)
+                        print("Logging in... | \r")
+                        usleep(500000)
+                        
+                        
+                        //loggingIn=false
+                        loading = false
+                    }
+                    ShowMainMenu()
                 }
-                ShowMainMenu()
             }
-        }
+        //}
     }
 
+    
     
     func CreateUser(){
         print("Please input username: ", terminator: "");
         if let username = readLine(){
-            
+            print(username);
             print("Please input password: ", terminator: "");
             if let password = readLine(){
             
-                let newUser = User(userFirstName: "Firsname-\(username)");
+//                let newUser = User(userFirstName: "Firsname-\(username)");
                 print(password);
                 
-                database.userTable.append(newUser);
+  //              database.userTable.append(newUser);
                 
                 print("User has been created - please login");
             }
@@ -524,10 +553,12 @@ class Interface {
     }
     
     
+    
     func LoginAlias(){
         self.isUserLoggedIn = true;
         self.userName = "Dummy account";
     }
+    
     
     
     func ShowProfileCredentials(){
@@ -539,8 +570,7 @@ class Interface {
             print("Press any key to return to main manu...")
         }
     }
-    
-    
+
     
     
     /// Shows the main menu
@@ -617,6 +647,8 @@ class Interface {
         }
     }
     
+    
+    
     func Logout(){
         // In case a user does a logout - reset these informations
         self.currentUser = nil;
@@ -628,69 +660,71 @@ class Interface {
 
 
 
-func MakeQuestions(){
-    
-    let newQuiz = Quiz(title: "Svære matematik regnestykker", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
-    database.quizTable.append(newQuiz);
-    
-    let newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1", points: 1);
-    database.questionTable.append(newQuestion);
-    
-    let newAnswerA = Answer(questionId: 1, answerText: "1");
-    let newAnswerB = Answer(questionId: 1, answerText: "2");
-    let newAnswerC = Answer(questionId: 1, answerText: "3");
-    let newAnswerD = Answer(questionId: 1, answerText: "4");
-    
-    database.answerTable.append(newAnswerA);
-    database.answerTable.append(newAnswerB);
-    database.answerTable.append(newAnswerC);
-    database.answerTable.append(newAnswerD);
-    
-    
-    
-    let newQuiz2 = Quiz(title: "Svære matematik regnestykker 2", description: "Se om du kan klare det!", creator: 1, isQuestionsRandom: false, minimumToAnswer: 1);
-    database.quizTable.append(newQuiz2);
-    
-    let newQuestion2 = Question(quizId: 2, correctAnswerId: 2, text: "Hvad er 2*10", points: 1);
-    database.questionTable.append(newQuestion2);
-    
-    let newAnswerE = Answer(questionId: 2, answerText: "KappaPride");
-    let newAnswerF = Answer(questionId: 2, answerText: "20");
-    let newAnswerG = Answer(questionId: 2, answerText: "4Head");
-    let newAnswerH = Answer(questionId: 2, answerText: "NoT tHiS oNe");
-    
-    database.answerTable.append(newAnswerE);
-    database.answerTable.append(newAnswerF);
-    database.answerTable.append(newAnswerG);
-    database.answerTable.append(newAnswerH);
-    
-}
+/* Class seperator *******************************************************************************************/
 
 
 
-func MakeUsers(){
-    var a = User(userFirstName: "Maria");
-    database.userTable.append(a);
+/// This creates some objects in the database so that it is not empty
+func populateDatabase(){
     
-    a = User(userFirstName: "Benjamin");
-    database.userTable.append(a);
+    /* Make some users */
+    let makeUsers: [String] = [
+        "Casper", "", "Nørgaard", "Casper", "casper@somewhere.dk", "1234",
+        "Benjamin", "", "Sandland", "Benjamin", "benjamin@somewhereelse.com", "9ABC",
+        "Maria", "", "Clemmensen", "Maria", "maria@somewhereinbetween.net", "5678",
+        "Peter", "Rudolf", "Hansen", "Peter", "peter@hotmail.com", "abcd",
+        "Jens", "", "Hansen", "Jens", "jens@hotmail.com", "abcd",
+        "Thomas", "Fido", "Pedersen", "Thomas", "thomas@hotmail.com", "abcd"
+    ];
     
-    a = User(userFirstName: "Casper");
-    database.userTable.append(a);
-    
-    for i in database.userTable{
-        print(i.getUserFirstName());
+    var i: Int = 0;
+    while i < makeUsers.count {
+        let newUser = User(userFirstName: makeUsers[i], userMiddleName:  makeUsers[i+1], userLastName:  makeUsers[i+2],
+                           userName:  makeUsers[i+3], eMail:  makeUsers[i+4], password:  makeUsers[i+5])
+        database.userTable.append(newUser);
+        i+=6;
     }
+    /* Make some users */
+    
+    
+    /* Make some Quizes */
+    let makeQuizes: [String] = [
+        "Computer Science", "Basic questions regarding computer science", "1", "false", "1",
+        "Mathematics", "Fundamental mathematics used within programming", "2", "false", "1",
+        "Computer Science 2", "Mediocre questions regarding computer science", "3", "false", "1"
+    ];
+
+    i = 0;
+    // Force unwrap used below, because it is merely static data being loaded
+    while i < makeQuizes.count {
+        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!, isQuestionsRandom: Bool(makeQuizes[i+3])!, minimumToAnswer: Int(makeQuizes[i+4])!);
+        database.quizTable.append(newQuiz);
+        i+=5;
+    }
+    /* Make some Quizes */
+    
+    // Make Questions
+    
+    // Make answers
+    
+    /*
+    let makeQuizes: [String] = [
+        "Computer Science", "What is 00000100 in binary?", "1", "false", "1",
+        "Mathematics", "What is 5 % 4?", "2", "false", "1",
+        "Computer Science 2", "How can a value of 64 be represented?", "3", "false", "1"
+    ];*/
 
     
 }
+
+populateDatabase();
+
+
+
+
+
+
 
 /// This creates and starts the program
 var main = Interface();
-
-
-
-var tempUsers: [String] = [""];
-
-
 
