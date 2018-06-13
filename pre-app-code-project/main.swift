@@ -9,46 +9,6 @@
 import Foundation
 
 
-class Question {
-    
-    // Private variables for Question class
-    
-    private var questionId : Int
-    private var quizId : Quiz
-    private var correctAnswerId : Int
-    private var answers : [String]
-    
-    
-    
-    // Functions for Question class
-    
-    func ListAnswers(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func EditAnswers(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func createAnswers() -> [QuizTable] {
-        <#function body#>
-    }
-    
-    func ChooseCorrectAnswer(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    // Initializer for Question class
-    
-    init(questionId: Int, correctAnswerId: Int, answer: [String]) {
-        
-        self.questionId = questionId
-      
-        self.correctAnwswerId = correctAnswerId
-    }
-    
-}
-
 
 class Quiz {
     
@@ -65,49 +25,155 @@ class Quiz {
     
     
     // Functions for Quiz class
+    /*
+     func QuizMenu(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func StartQuiz(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func ShowScoreBoard(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func ListQuestions(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func ChangeQuestionOrder(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func EditQuestion(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func CreateQuestion(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func DeleteQuestion(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }*/
     
-    func QuizMenu(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func StartQuiz(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func ShowScoreBoard(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func ListQuestions(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func ChangeQuestionOrder(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func EditQuestion(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func CreateQuestion(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    func DeleteQuestion(<#parameters#>) -> <#return type#> {
-        <#function body#>
-    }
-    
-    init(quizId: Int, title: String, description: String, creator: user, isQuestionRandom: Bool, minimumToAnswer: Int) {
+    init(quizId: Int, title: String, description: String, creator: user, isQuestionsRandom: Bool, minimumToAnswer: Int) {
         
         self.quizId = quizId
         self.title = title
         self.description = description
         self.creator = creator
         self.isQuestionsRandom = isQuestionsRandom
-        self.minimumToAnswser = minimumToAnswer
+        self.minimumToAnswer = minimumToAnswer
     }
 }
+
+
+
+class Question {
+    
+    // Private variables for Question class
+    
+    private var questionId : Int
+    private var quizId : Int
+    private var correctAnswerId : Int
+    private var text : String
+    
+    
+    
+    // Functions for Question class
+    /*
+     func ListAnswers() -> <#return type#> {
+     <#function body#>
+     }
+     
+     func EditAnswers(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }
+     
+     func createAnswers() -> [QuizTable] {
+     <#function body#>
+     }
+     
+     func ChooseCorrectAnswer(<#parameters#>) -> <#return type#> {
+     <#function body#>
+     }*/
+    
+    // Initializer for Question class
+    
+    init(quizId: Int, correctAnswerId: Int, text: String) {
+        
+        self.questionId = database.getNewUserId();
+        self.quizId = quizId;
+        self.correctAnswerId = correctAnswerId
+        self.text = text
+    }
+    
+}
+
+
+/*-----------------* Quiz class -----------------*/
+
+class Answer{
+    //Dummy class to avoid errors
+    var answerId: Int;
+    var questionId: Int;
+    var answerText: String;
+    
+    init(questionId: Int, answerText: String){
+        self.questionId = questionId;
+        self.answerText = answerText;
+        self.answerId = database.getNewAnserId();
+        
+    }
+}
+
+
+
+/*-----------------* Database class -----------------*/
+
+class Database {
+    
+    var quizTable: [Quiz] = [];
+    var questionTable: [Question] = [];
+    var answerTable: [Answer] = [];
+    
+    /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
+    private var userCurrentId: Int = 0;
+    
+    /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
+    func getNewUserId() -> Int {
+        self.userCurrentId = self.userCurrentId + 1;
+        return self.userCurrentId;
+    }
+    
+    
+   private var scoreBoardId: Int = 0;
+    
+   func getScoreBoardId() -> Int {
+        self.scoreBoardId = self.scoreBoardId + 1;
+        return self.scoreBoardId;
+    }
+    
+    
+   private var answerId: Int = 0;
+    
+   func getNewAnserId() -> Int {
+        self.answerId = self.answerId + 1;
+        return self.answerId;
+    }
+    
+    
+}
+
+var database: Database = Database();
+
+
+
+
+
+
 
 
 
@@ -286,67 +352,7 @@ class Quiz {
 // Maria
 
 
-/*-----------------* Quiz class -----------------*/
 
-class Quiz{
-    //Dummy class to avoid errors
-}
-
-class Question{
-    //Dummy class to avoid errors
-}
-
-class Answer{
-    //Dummy class to avoid errors
-    var answerId: Int;
-    var questionId: Int;
-    var answerText: String;
-    
-    init(questionId: Int, answerText: String){
-        self.questionId = questionId;
-        self.answerText = answerText;
-        self.answerId = database.answerTable.length;
-    }
-}
-
-
-
-/*-----------------* Database class -----------------*/
-
-class Database {
-    
-    var quizTable = [Quiz];
-    var questionTable = [Question];
-    var answerTable = [Answer];
-    
-    /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
-    private var userCurrentId: Int = 0;
-    
-    /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
-    func getNewUserId() -> Int {
-        self.userCurrentId = self.userCurrentId + 1;
-        return self.userCurrentId;
-    }
-    
-    
-    /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
-    private var scoreBoardId: Int = 0;
-    
-    /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
-    func getScoreBoardId() -> Int {
-        self.scoreBoardId = self.scoreBoardId + 1;
-        return self.scoreBoardId;
-    }
-    
-    
-}
-
-var database: Database = Database();
-
-var newQuestion = Question();
-database.questionTable.append(newQuestion);
-
-var newAnswerA = Answer(questionId: 1, an)
 
 
 
@@ -404,6 +410,32 @@ class Interface {
     
     /// Shows the main menu
     func ShowMenu(){
+        
+        
+        
+        
+        
+        var newQuestion = Question(quizId: 1, correctAnswerId: 2, text: "Hvad er 1+1");
+        database.questionTable.append(newQuestion);
+        
+        var newAnswerA = Answer(questionId: 1, answerText: "1");
+        var newAnswerB = Answer(questionId: 1, answerText: "2");
+        var newAnswerC = Answer(questionId: 1, answerText: "3");
+        var newAnswerD = Answer(questionId: 1, answerText: "4");
+        
+        database.answerTable.append(newAnswerA);
+        database.answerTable.append(newAnswerB);
+        database.answerTable.append(newAnswerC);
+        database.answerTable.append(newAnswerD);
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         while(!didUserQuit) {
 
