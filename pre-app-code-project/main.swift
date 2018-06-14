@@ -2,7 +2,7 @@
 //  main.swift
 //  pre-app-code-project
 //
-//  Created by Bruger on 12/06/2018.
+//  Created by (ʘᗩʘ’) on 12/06/2018.
 //  Copyright © 2018 4Head. All rights reserved.
 //
 
@@ -956,7 +956,8 @@ func populateDatabase(){
     // Make Questions
     let makeQuestions: [String] = [
         "1", "5", "What is HDD?", "1",
-        "1", "7", "What is the best cheapest of these?", "1"
+        "1", "7", "What is the best cheapest of these?", "1",
+        "1", "8", "What is the correct reprensation of a sacartic face?"
     ];
     
     i = 0;
@@ -976,7 +977,14 @@ func populateDatabase(){
         "1", "Hydraulic Disk Drive",
         "1", "Hard Disk Drive",
         "2", "MacBook",
-        "2", "Toshiba PC"
+        "2", "Toshiba PC",
+        "3", "1Head",
+        "3", "2Head",
+        "3", "3Head",
+        "3", "5Head",
+        "3", "monkaS",
+        "3", "1/2Head",
+        "3", "4Head",
     ];
     
     i = 0;
@@ -1000,5 +1008,6 @@ populateDatabase();
 /// This creates and starts the program
 var main = Interface();
 
+var donger4Head = print("4Head")
 
 
