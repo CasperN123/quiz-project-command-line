@@ -330,9 +330,17 @@ class Database {
     private var answerTable: [Answer] = [];
     private var userTable: [User] = [];
     private var userAnswerTable: [UserAnswer] = [];
-    var userPoints: [Int] = [12093]
+    var userPoints: [Int] = [1,3,4,5,6,7,34543,3453,123,414,42,3,5,21,45]
     
-    
+    func sortedHighscore() {
+    for points in (userPoints.sorted())
+    {
+    let userHighscores = points
+        
+        
+        print(userHighscores)
+    }
+}
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
     private var answerId: Int = 0;
@@ -832,6 +840,7 @@ class Interface {
     func ScoreBoard() {
         
        
+        
        
         
         print("""
@@ -839,7 +848,7 @@ class Interface {
             |--------------------------------|
             | BEST QUIZZERS IN THE LONELY CS |
             |--------------------------------|
-            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
+            | \((self.currentUser!.GetUserFirstName())) | \(database.sortedHighscore())|
             |--------|-----------------------|
             | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
             | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
