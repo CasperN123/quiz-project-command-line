@@ -161,13 +161,31 @@ class Answer{
     private var answerId: Int;
     private var questionId: Int;
     private var answerText: String;
-    private var userId: Int
     
-    init(questionId: Int, answerText: String, userId: Int){
+    init(questionId: Int, answerText: String){
         self.questionId = questionId;
         self.answerText = answerText;
         self.answerId = database.GetNewAnswerId();
-        self.userId = userId
+        
+    }
+}
+
+
+/* Class seperator *******************************************************************************************/
+
+
+
+class UserAnswer{
+    private var userAnswerId: Int;
+    private var questionId: Int;
+    private var answerId: Int;
+    private var userId: Int
+    
+    init(questionId: Int, answerId: Int, userId: Int){
+        self.userAnswerId = database.GetNewUserAnswerId();
+        self.questionId = questionId;
+        self.answerId = answerId;
+        self.userId = userId;
         
     }
 }
@@ -286,6 +304,7 @@ class Database {
     private var userCurrentId: Int = 0;
     private var answerId: Int = 0;
     private var quizId: Int = 0;
+    private var userAnswerId: Int = 0;
     
     /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
     func GetNewUserId() -> Int {
@@ -298,6 +317,11 @@ class Database {
     func GetNewAnswerId() -> Int {
         self.answerId = self.answerId + 1;
         return self.answerId;
+    }
+    
+    func GetNewUserAnswerId() -> Int {
+        self.userAnswerId = self.userAnswerId + 1;
+        return self.userAnswerId;
     }
     
     
