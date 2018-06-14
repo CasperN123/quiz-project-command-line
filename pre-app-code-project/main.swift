@@ -169,31 +169,21 @@ class Question {
         }
     }
     
-    
-    /*
-     func ListAnswers() -> <#return type#> {
-     <#function body#>
-     }
-     
-     func EditAnswers(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
-     
-     func ChooseCorrectAnswer(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }*/
-    
     // Initializer for Question class
     
     init(quizId: Int, correctAnswerId: Int, text: String, points: Int) {
         
-        self.questionId = database.GetNewUserId();
+        self.questionId = database.GetNewQuestionId();
         self.quizId = quizId;
         self.correctAnswerId = correctAnswerId
         self.text = text
         self.points = points
     }
+    
+    func GetPoints() -> Int {
+        return self.points;
+    }
+    
     
     func GetQuizId() -> Int {
         return self.quizId;
@@ -206,6 +196,9 @@ class Question {
     
     func GetQuestionId() -> Int {
         return self.questionId;
+    }
+    func GetCorrectAnswer() -> Int {
+        return self.correctAnswerId;
     }
     
 }
@@ -345,12 +338,19 @@ class Database {
     private var answerId: Int = 0;
     private var quizId: Int = 0;
     private var userAnswerId: Int = 0;
+    private var questionId: Int = 0;
     
     /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
     func GetNewUserId() -> Int {
         self.userCurrentId = self.userCurrentId + 1;
         return self.userCurrentId;
     }
+    func GetNewQuestionId() -> Int {
+        self.questionId = self.questionId + 1;
+        return self.questionId;
+    }
+    
+
     
     
     
@@ -396,6 +396,10 @@ class Database {
     
     func AppendAnswerTable(answer: Answer){
         self.answerTable.append(answer);
+    }
+
+    func AppendUserAnswerTable(answer: UserAnswer){
+        self.userAnswerTable.append(answer);
     }
 
     
@@ -747,36 +751,37 @@ class Interface {
                         print("\n\n\n");
                         for question in database.GetQuestionTable() {
                             
-                            print(question.GetQuestion());
                             if(question.GetQuizId() == chosenQuiz.GetQuizId()) {
-                                
-                                print("\n\n\n");
-                                for answer in database.GetAnswerTable() {
-                                    print("\(answer.GetAnswerId()): \(answer.GetAnswerText())");
-                                    
-                                    
-                                    
+                                print("\n\n\(question.GetQuestion())");
+                                for answer in database.GetAnswerTable(){
+                                    if(answer.GetQuestionId() == question.GetQuestionId()){
+                                        print("Id: \(answer.GetAnswerId()): \(answer.GetAnswerText())");
+                                    }
                                 }
+                                
+                                print("Please choose the id that corresponds to the answer:", terminator: " ");
+                                if let userAnswer = readLine(), let userAnswerInt = Int(userAnswer){
+                                    if(question.GetCorrectAnswer() == userAnswerInt){
+                                        userPoint += question.GetPoints();
+                                        print("Correct, you received \(question.GetPoints()) point. Points are now: \(userPoint)\n\n\n");
+                                    } else {
+                                        print("Wrong answer, it was the one with id: \n\(question.GetCorrectAnswer())");
+                                    }
+                                    
+                                    if(!self.isAliasUserLoggedIn){
+                                        if let userIs = self.currentUser{
+                                            let newUserAnswer = UserAnswer(questionId: question.GetQuestionId(), answerId: userAnswerInt, userId: userIs.GetUserId());
+                                            database.AppendUserAnswerTable(answer: newUserAnswer);
+                                        }
+                                    }
+                                }
+                            
+                                
                             }
                         }
                         
+                        print("\n\nQuiz over - points: \(userPoint)");
                         
-                        /* loop igennem database questionTable
-                         
-                         
-                         find questiond der har quizid som chosenquiz
-                         
-                         for hvert spørgsmål
-                         skriv spørgsmål tekst
-                         loop igennem database.answertable ish (ikke user anser table)
-                        hvis question id under et answer er det samme som question man er i i loopet
-                         
-                         - så skriv svar muligheder ud ... bed bruger vælge
-                         check om question . correctanswer er det samme som det id brugeren gav
-                         hvis tilfældet - øg en point tælles ... under quiz?
-                         
-                         ... efter alle spørgsmål er færdt ! Råb hurra, aå alle kan høre det
- */
                     }
                     
                
