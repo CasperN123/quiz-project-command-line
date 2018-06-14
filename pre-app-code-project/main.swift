@@ -158,9 +158,10 @@ class Question {
 
 
 class Answer{
-    var answerId: Int;
-    var questionId: Int;
-    var answerText: String;
+    private var answerId: Int;
+    private var questionId: Int;
+    private var answerText: String;
+    private var userId: Int
     
     init(questionId: Int, answerText: String){
         self.questionId = questionId;
@@ -202,11 +203,11 @@ class User {
         // Values to properties assigned afterwards
     }
     
-    func getUserId() -> Int {
+    func GetUserId() -> Int {
         return self.userId; // TODO: Change this
     }
     
-    func getUserFirstName() -> String {
+    func GetUserFirstName() -> String {
         return self.userFirstName; // TODO: Change this
     }
     
@@ -341,7 +342,7 @@ class Database {
     
     /// Show all of the quizes in the database
     /// Return: quizId
-    func FindQuiz() -> Int?{
+    func FindQuiz() -> Quiz?{
         print("The following quizes are in database");
         print("Quiz number:\t\tQuiz title:\t\t\t\tQuiz description:");
         for quiz in database.quizTable {
@@ -364,7 +365,7 @@ class Database {
                         
                         /* Note regarding below: Since the loop will run until a correct input has been made, and the while loop will break at the return value, this boolean seems pointless - if it was not for the posibility to choose 0 and abort */
                         correctInput = true;
-                        return userInt;
+                        return quiz;
                     }
                 }
             }
