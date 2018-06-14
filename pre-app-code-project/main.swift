@@ -468,10 +468,10 @@ class Database {
     /// Show all of the quizes in the database
     /// Return: quizId
     func FindQuiz() -> Quiz?{
-        print("The following quizes are in database");
+        print("\n\n\nThe following quizes are in database");
         print("Quiz number:\t\tQuiz title:\t\t\t\tQuiz description:");
         for quiz in database.quizTable {
-            print("\(quiz.GetQuizId())\t\t\t\t\(quiz.GetQuizTitle())\t\t\t\t\(quiz.GetQuizDescription())\t\t");
+            print("\(quiz.GetQuizId())\t\t\t\t\t\(quiz.GetQuizTitle())\t\t\(quiz.GetQuizDescription())");
         }
         
         /// For controlling whether a database with the selected id exists
@@ -744,11 +744,18 @@ class Interface {
                     var userPoint = 0;
                     if let chosenQuiz = database.FindQuiz(){
                         
+                        print("\n\n\n");
                         for question in database.GetQuestionTable() {
                             
+                            print(question.GetQuestion());
                             if(question.GetQuizId() == chosenQuiz.GetQuizId()) {
-                                for answers in database.GetAnswerTable() {
-                                    //print("<#T##items: Any...##Any#>")
+                                
+                                print("\n\n\n");
+                                for answer in database.GetAnswerTable() {
+                                    print("\(answer.GetAnswerId()): \(answer.GetAnswerText())");
+                                    
+                                    
+                                    
                                 }
                             }
                         }
@@ -889,8 +896,7 @@ func populateDatabase(){
     
     /* Make some Quizes */
     let makeQuizes: [String] = [
-        "Computer Science", "Basic questions regarding computer science", "1",
-        "Mathematics", "Fundamental mathematics used within programming", "2"
+        "Computer Science", "Basic questions regarding computer science", "1"
     ];
 
     i = 0;
@@ -902,35 +908,41 @@ func populateDatabase(){
     }
     /* Make some Quizes */
     
-    /*
+    
     // Make Questions
-    let makeQuizes: [String] = [
-        "Computer Science", "Basic questions regarding computer science", "1",
-        "Mathematics", "Fundamental mathematics used within programming", "2"
+    let makeQuestions: [String] = [
+        "1", "5", "What is HDD?", "1",
+        "1", "7", "What is the best cheapest of these?", "1"
     ];
     
     i = 0;
     // Force unwrap used below, because it is merely static data being loaded
-    while i < makeQuizes.count {
-        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!);
-        database.AppendQuizTable(quiz: newQuiz);
-        i+=3;
+    while i < makeQuestions.count {
+        let newQuestion = Question(quizId: Int(makeQuestions[i])!, correctAnswerId: Int(makeQuestions[i+1])!, text: makeQuestions[i+2], points: 1);
+        database.AppendQuestionTable(question: newQuestion);
+        i+=4;
     }
+    
     
     // Make answers
-    let makeQuizes: [String] = [
-        "Computer Science", "Basic questions regarding computer science", "1",
-        "Mathematics", "Fundamental mathematics used within programming", "2"
+    let makeAnswers: [String] = [
+        "1", "Highly Disfunctional Diagnosies",
+        "1", "Heavy Drive Disk",
+        "1", "High Density Drive",
+        "1", "Hydraulic Disk Drive",
+        "1", "Hard Disk Drive",
+        "2", "MacBook",
+        "2", "Toshiba PC"
     ];
     
     i = 0;
     // Force unwrap used below, because it is merely static data being loaded
-    while i < makeQuizes.count {
-        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!);
-        database.AppendQuizTable(quiz: newQuiz);
-        i+=3;
+    while i < makeAnswers.count {
+        let newAnswer = Answer(questionId: Int(makeAnswers[i])!, answerText: makeAnswers[i+1])
+        database.AppendAnswerTable(answer: newAnswer);
+        i+=2;
     }
-    // Make answers*/
+    // Make answers
 }
 
 populateDatabase();
