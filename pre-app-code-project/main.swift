@@ -24,21 +24,24 @@ class Quiz {
     // Functions for Quiz class
     
     
-    func CreateQuestions() {
+    func CreateQuestions(quiz: Quiz) {
         var makingQuestions = true;
         while(makingQuestions){
-            print("Do you want to a dd a new question? Y/N:", terminator: " ");
+            print("\n\nDo you want to add a new question? Y/N:", terminator: " ");
             if let userChoice = readLine(){
                 switch userChoice.uppercased(){
                 case "Y":
                     print("Please type a new question:", terminator: " ");
                     if let userQuestion = readLine(){
-                        //let newQuestion = Question(quizId: , correctAnswerId: <#T##Int#>, text: <#T##String#>, points: <#T##Int#>)
+                        let newQuestion = Question(quizId: quiz.GetQuizId(), correctAnswerId: 0, text: userQuestion, points: 1);
+                        database.AppendQuestionTable(question: newQuestion);
+                        newQuestion.CreateAnswers(question: newQuestion);
                     }
                 case "N":
-                    print("Quiz has been saved");
-                    makingQuestions = false;
-                    print("Exiting");
+                        print("Quiz has been saved");
+                        makingQuestions = false;
+                        print("Exiting");
+                    
                 default:
                     print("Selection not recognized");
                 }
@@ -62,9 +65,7 @@ class Quiz {
      }
      
      
-     func DeleteQuestion(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }*/
+     */
     
     func GetQuizTitle() -> String{
         return self.title;
@@ -103,16 +104,62 @@ class Question {
     private var points : Int
     
     
-    // Functions for Question class
-    
-    func Points() {
-        
-        if correctAnswerId == quizId {
-            
-            points += 1
-            
+    func ListAnswers(question: Question){
+        for answer in database.GetAnswerTable(){
+            if(answer.GetAnswerId() == question.GetQuizId()){
+                print(answer.GetAnswerText());
+            }
         }
     }
+    
+    
+    func CreateAnswers(question: Question) {
+        var makingAnswers = true;
+        while(makingAnswers){
+            print("\n\nDo you want to add a new answer? Y/N:", terminator: " ");
+            if let userChoice = readLine(){
+                switch userChoice.uppercased(){
+                case "Y":
+                    print("Please type a new answer:", terminator: " ");
+                    if let questionAnswer = readLine(){
+                        let newAnswer = Answer(questionId: question.GetQuestionId(), answerText: questionAnswer)
+                        database.AppendAnswerTable(answer: newAnswer);
+//                        question.correctAnswerId
+                    }
+                case "N":
+                    var correctAnswerChosen = false;
+                    while(!correctAnswerChosen){
+                        print("\n\n\n\n\n\nYou have made the following answers:")
+                        for answer in database.GetAnswerTable(){
+                            if(answer.GetQuestionId() == question.GetQuestionId()){
+                                print("Id: \(answer.GetAnswerId()):\t\(answer.GetAnswerText())");
+                            }
+                        }
+                        print("Please type the Id of correct answer:", terminator: " ");
+                        if let correctAnswerChoice = readLine(), let correctAnswerInt = Int(correctAnswerChoice){
+                            
+                            // Checks that the id is indeed connected to the question
+                            for answer in database.GetAnswerTable(){
+                                if(answer.GetQuestionId() == question.GetQuestionId()){
+                                    print(answer.GetAnswerId());
+                                    print(correctAnswerInt);
+                                    
+                                    if(answer.GetAnswerId() == correctAnswerInt){
+                                        correctAnswerChosen = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    print("\n\nQuestion has been saved");
+                    makingAnswers = false;
+                default:
+                    print("Selection not recognized");
+                }
+            }
+        }
+    }
+    
     
     /*
      func ListAnswers() -> <#return type#> {
@@ -123,9 +170,6 @@ class Question {
      <#function body#>
      }
      
-     func createAnswers() -> [QuizTable] {
-     <#function body#>
-     }
      
      func ChooseCorrectAnswer(<#parameters#>) -> <#return type#> {
      <#function body#>
@@ -142,13 +186,17 @@ class Question {
         self.points = points
     }
     
-    func getQuizId() -> Int {
+    func GetQuizId() -> Int {
         return self.quizId;
     }
     
     
-    func getQuestion() -> String {
+    func GetQuestion() -> String {
         return self.text;
+    }
+    
+    func GetQuestionId() -> Int {
+        return self.questionId;
     }
     
 }
@@ -169,6 +217,18 @@ class Answer{
         self.answerText = answerText;
         self.answerId = database.GetNewAnswerId();
         
+    }
+    
+    func GetAnswerId() -> Int{
+        return self.answerId;
+    }
+    
+    func GetQuestionId() -> Int{
+        return self.questionId;
+    }
+    
+    func GetAnswerText() -> String{
+        return self.answerText;
     }
 }
 
@@ -267,6 +327,7 @@ class Database {
     private var questionTable: [Question] = [];
     private var answerTable: [Answer] = [];
     private var userTable: [User] = [];
+    private var userAnswerTable: [UserAnswer] = [];
     private var userPoints: [Int] = []
     
     
@@ -306,6 +367,17 @@ class Database {
     func GetQuizTable() -> [Quiz]{
         return self.quizTable;
     }
+    func GetAnswerTable() -> [Answer]{
+        return self.answerTable;
+    }
+    func GetUserAnswerTable() -> [UserAnswer]{
+        return self.userAnswerTable;
+    }
+    func GetQuestionTable() -> [Question]{
+        return self.questionTable;
+    }
+    
+    
     
     func GetQuestionTable() -> [Question]{
         return self.questionTable;
@@ -322,6 +394,15 @@ class Database {
     
     
     
+    func AppendAnswerTable(answer: Answer){
+        self.answerTable.append(answer);
+    }
+
+    
+    func AppendQuestionTable(question: Question){
+        self.questionTable.append(question);
+    }
+
     func AppendQuizTable(quiz: Quiz){
         self.quizTable.append(quiz);
     }
@@ -378,7 +459,7 @@ class Database {
             if let description = readLine(){
                 let newQuiz = Quiz(title: title, description: description, creator: user.GetUserId());
                 self.AppendQuizTable(quiz: newQuiz);
-                newQuiz.CreateQuestions();
+                newQuiz.CreateQuestions(quiz: newQuiz);
             }
         }
     }
