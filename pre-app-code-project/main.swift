@@ -269,6 +269,7 @@ class Database {
     private var userTable: [User] = [];
     private var userPoints: [Int] = []
     
+    
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
     private var answerId: Int = 0;
@@ -306,6 +307,13 @@ class Database {
         return self.quizTable;
     }
     
+    func GetQuestionTable() -> [Question]{
+        return self.questionTable;
+    }
+    
+    func GetAnswerTable() -> [Answer]{
+        return self.answerTable;
+    }
     
     
     func GetUserTable() -> [User]{
@@ -325,17 +333,38 @@ class Database {
     }
     
     
+
     
-    // TODO
+    
+    // NOT TODO
     func ShowQuizzes() {
         print("The following quizes exist:");
-        // Find Quiz
+        
+        print("\(quizTable)")
+        
         // Run Quiz
         // Show statistics?
         // End Quiz
         print("Please choose a quiz:", terminator: " ");
         if let userSelectedQuiz = readLine(){
             print(userSelectedQuiz);
+            
+        let selectedQuiz = readLine()
+            switch selectedQuiz {
+           
+            case "1":
+                print("\(quizTable.index(after: 0))")
+            case "2":
+                print("\(quizTable.index(after: 1))")
+            case "3":
+                print("\(quizTable.index(after: 2))")
+            case "4":
+                print("\(quizTable.index(after: 3))")
+
+            default:
+                print("If you wish to return to main menu press x")
+                
+            }
         }
     }
     
@@ -625,21 +654,52 @@ class Interface {
                     userInputUC = userInput.uppercased();
                 }
                 
+                func yeet() {
+                    
+                }
+                
                 switch userInputUC {
                     
                 case "Q":
-                    if let chosenQuiz = database.FindQuiz(){
+                    if var chosenQuiz = database.FindQuiz(){
                         print("Wow, the user selected a quiz with the id of: \(chosenQuiz.GetQuizId())");
                         
                         print("You have chosen");
                         print(chosenQuiz.GetQuizTitle());
                         print(chosenQuiz.GetQuizDescription());
                         
-                        let _ = readLine();
+                        var fourHead = readLine();
                         
-                        // Svar m.v.
+                        
+                        for question in database.GetQuestionTable() {
+                            
+                            if(question.getQuizId() == chosenQuiz.GetQuizId()) {
+                                for answers in database.GetAnswerTable() {
+                                    print("<#T##items: Any...##Any#>")
+                                }
+                            }
+                        }
+                        
+                        
+                        /* loop igennem database questionTable
+                         
+                         
+                         find questiond der har quizid som chosenquiz
+                         
+                         for hvert spørgsmål
+                         skriv spørgsmål tekst
+                         loop igennem database.answertable ish (ikke user anser table)
+                        hvis question id under et answer er det samme som question man er i i loopet
+                         
+                         - så skriv svar muligheder ud ... bed bruger vælge
+                         check om question . correctanswer er det samme som det id brugeren gav
+                         hvis tilfældet - øg en point tælles ... under quiz?
+                         
+                         ... efter alle spørgsmål er færdt ! Råb hurra, aå alle kan høre det
+ */
                     }
                     
+               
                 case "C":
                     if let user = self.currentUser{
                         database.CreateQuiz(user: user);
@@ -794,4 +854,6 @@ populateDatabase();
 
 /// This creates and starts the program
 var main = Interface();
+
+
 
