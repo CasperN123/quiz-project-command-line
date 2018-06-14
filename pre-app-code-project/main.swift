@@ -330,7 +330,7 @@ class Database {
     private var answerTable: [Answer] = [];
     private var userTable: [User] = [];
     private var userAnswerTable: [UserAnswer] = [];
-    var userPoints: [Int] = []
+    var userPoints: [Int] = [12093]
     
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
@@ -791,7 +791,7 @@ class Interface {
                     }
                     
                 case "S":
-                    print("Starting program");
+                    ScoreBoard()
                     
                     
                 case "A":
@@ -829,12 +829,39 @@ class Interface {
     
     
     // TODO ... if a singleScore is requested - go directly to show scores of quizId - otherwise show selection menu...
+    func ScoreBoard() {
+        
+       
+       
+        
+        print("""
+            \n\n\n
+            |--------------------------------|
+            | BEST QUIZZERS IN THE LONELY CS |
+            |--------------------------------|
+            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
+            |--------|-----------------------|
+            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
+            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
+            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
+            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
+            |--------------------------------|
+            
+            
+            Press the right key to leave :)
+            
+            
+            """, terminator: " ");
+        readLine()
+    }
+    
     func SummarizeScores(singleScore: Bool, quizId: Int) {
-        // Activate scoreboard function
-        // List quizes
+       
         if let quiz = database.FindQuiz(){
             print(quiz)
         }
+        
+    
         // User choose quiz - implemented in FindQuiz?
         
         // Get quizID from selected quiz
