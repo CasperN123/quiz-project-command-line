@@ -163,10 +163,11 @@ class Answer{
     private var answerText: String;
     private var userId: Int
     
-    init(questionId: Int, answerText: String){
+    init(questionId: Int, answerText: String, userId: Int){
         self.questionId = questionId;
         self.answerText = answerText;
         self.answerId = database.GetNewAnswerId();
+        self.userId = userId
         
     }
 }
