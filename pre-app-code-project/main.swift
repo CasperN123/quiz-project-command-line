@@ -496,7 +496,7 @@ class Interface {
                     print("Logging in... | \r")
                     usleep(500000)
                     
-                    
+
                     loggingIn=false
                     loading = false
                 }
