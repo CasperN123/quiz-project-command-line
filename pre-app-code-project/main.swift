@@ -379,14 +379,6 @@ class Database {
     
     
     
-    func GetQuestionTable() -> [Question]{
-        return self.questionTable;
-    }
-    
-    func GetAnswerTable() -> [Answer]{
-        return self.answerTable;
-    }
-    
     
     func GetUserTable() -> [User]{
         return self.userTable;
@@ -699,7 +691,7 @@ class Interface {
         if let aliasUsername = readLine(){
             self.isAliasUserLoggedIn = true;
             self.userName = "Alias-"+aliasUsername;
-            self.currentUser = User(userFirstName: "", userMiddleName: "", userLastName: "", userName: "", eMail: "", password: "");
+            self.currentUser = User(userFirstName: "Not registered", userMiddleName: "Not registered", userLastName: "Not registered", userName: aliasUsername, eMail: "Not registered", password: "Not registered");
             self.ShowMainMenu();
         }
     }
@@ -719,8 +711,7 @@ class Interface {
                     |--------|-----------------------|
                     |    Q   | Go to quizes          |
                     |    C   | Create Quiz           |
-                    |    S   | Go to scoreboards     |
-                    |    U   | Go to user settings   |\(!self.isAliasUserLoggedIn ? "\n|    A   | Profile               |" : "" )
+                    |    S   | Go to scoreboards     |\(!self.isAliasUserLoggedIn ? "\n|    A   | Profile               |" : "" )
                     |    X   | Exit to main menu     |
                     |--------------------------------|
                     Logged in as: \(theCurrentUser.GetUserName())
@@ -742,18 +733,14 @@ class Interface {
                 switch userInputUC {
                     
                 case "Q":
-                    if var chosenQuiz = database.FindQuiz(){
-                        print("Wow, the user selected a quiz with the id of: \(chosenQuiz.GetQuizId())");
-                        
-                        
-                        var fourHead = readLine();
-                        
+                    var userPoint = 0;
+                    if let chosenQuiz = database.FindQuiz(){
                         
                         for question in database.GetQuestionTable() {
                             
-                            if(question.getQuizId() == chosenQuiz.GetQuizId()) {
+                            if(question.GetQuizId() == chosenQuiz.GetQuizId()) {
                                 for answers in database.GetAnswerTable() {
-                                    print("<#T##items: Any...##Any#>")
+                                    //print("<#T##items: Any...##Any#>")
                                 }
                             }
                         }
@@ -786,25 +773,25 @@ class Interface {
                 case "S":
                     print("Starting program");
                     
-                case "U":
-                    print("Starting program");
                     
                 case "A":
-                    var loading = true
-                    while loading == true {
-                        print("Fetching data /")
-                        usleep(500000)
-                        print("Fetching data -")
-                        usleep(500000)
-                        print("Fetching data \\")
-                        usleep(500000)
-                        print("Fetching data |")
-                        usleep(500000)
-               
-                      
-                        loading = false
+                    if(!self.isAliasUserLoggedIn){
+                        var loading = true
+                        while loading == true {
+                            print("Fetching data /")
+                            usleep(500000)
+                            print("Fetching data -")
+                            usleep(500000)
+                            print("Fetching data \\")
+                            usleep(500000)
+                            print("Fetching data |")
+                            usleep(500000)
+                   
+                          
+                            loading = false
+                        }
+                        ShowProfileCredentials()
                     }
-                    ShowProfileCredentials()
                     
                 /// Exits program
                 case "X":
@@ -895,8 +882,7 @@ func populateDatabase(){
     /* Make some Quizes */
     let makeQuizes: [String] = [
         "Computer Science", "Basic questions regarding computer science", "1",
-        "Mathematics", "Fundamental mathematics used within programming", "2",
-        "Computer Science 2", "Mediocre questions regarding computer science", "3"
+        "Mathematics", "Fundamental mathematics used within programming", "2"
     ];
 
     i = 0;
@@ -908,18 +894,35 @@ func populateDatabase(){
     }
     /* Make some Quizes */
     
+    /*
     // Make Questions
+    let makeQuizes: [String] = [
+        "Computer Science", "Basic questions regarding computer science", "1",
+        "Mathematics", "Fundamental mathematics used within programming", "2"
+    ];
+    
+    i = 0;
+    // Force unwrap used below, because it is merely static data being loaded
+    while i < makeQuizes.count {
+        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!);
+        database.AppendQuizTable(quiz: newQuiz);
+        i+=3;
+    }
     
     // Make answers
-    
-    /*
     let makeQuizes: [String] = [
-        "Computer Science", "What is 00000100 in binary?", "1", "false", "1",
-        "Mathematics", "What is 5 % 4?", "2", "false", "1",
-        "Computer Science 2", "How can a value of 64 be represented?", "3", "false", "1"
-    ];*/
-
+        "Computer Science", "Basic questions regarding computer science", "1",
+        "Mathematics", "Fundamental mathematics used within programming", "2"
+    ];
     
+    i = 0;
+    // Force unwrap used below, because it is merely static data being loaded
+    while i < makeQuizes.count {
+        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!);
+        database.AppendQuizTable(quiz: newQuiz);
+        i+=3;
+    }
+    // Make answers*/
 }
 
 populateDatabase();
