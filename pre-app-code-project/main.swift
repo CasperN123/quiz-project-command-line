@@ -36,19 +36,7 @@ class Quiz {
      <#function body#>
      }
      
-     func ShowScoreBoard(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
      func ListQuestions(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
-     func ChangeQuestionOrder(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
-     func EditQuestion(<#parameters#>) -> <#return type#> {
      <#function body#>
      }
      
@@ -94,7 +82,7 @@ class Question {
     private var quizId : Int
     private var correctAnswerId : Int
     private var text : String
-    var points : Int
+    private var points : Int
     
     
     // Functions for Question class
