@@ -75,7 +75,7 @@ class Quiz {
     
     init(title: String, description: String, creator: Int, isQuestionsRandom: Bool, minimumToAnswer: Int) {
         
-        self.quizId = database.getNewQuizId();
+        self.quizId = database.GetNewQuizId();
         self.title = title
         self.description = description
         self.creator = creator
@@ -83,6 +83,10 @@ class Quiz {
         self.minimumToAnswer = minimumToAnswer
     }
 }
+
+
+
+/* Class seperator *******************************************************************************************/
 
 
 
@@ -129,7 +133,7 @@ class Question {
     
     init(quizId: Int, correctAnswerId: Int, text: String, points: Int) {
         
-        self.questionId = database.getNewUserId();
+        self.questionId = database.GetNewUserId();
         self.quizId = quizId;
         self.correctAnswerId = correctAnswerId
         self.text = text
@@ -149,6 +153,10 @@ class Question {
 
 
 
+/* Class seperator *******************************************************************************************/
+
+
+
 class Answer{
     var answerId: Int;
     var questionId: Int;
@@ -157,15 +165,14 @@ class Answer{
     init(questionId: Int, answerText: String){
         self.questionId = questionId;
         self.answerText = answerText;
-        self.answerId = database.getNewAnswerId();
+        self.answerId = database.GetNewAnswerId();
         
     }
 }
 
 
 
-
-
+/* Class seperator *******************************************************************************************/
 
 
 
@@ -182,7 +189,7 @@ class User {
     
     // Initializer used when creating a user with the function
     init(userFirstName: String, userMiddleName: String, userLastName: String, userName: String, eMail: String, password: String){
-        self.userId = database.getNewUserId();
+        self.userId = database.GetNewUserId();
         
         self.userFirstName = userFirstName;
         self.userMiddleName = userMiddleName;
@@ -222,56 +229,114 @@ class User {
 
 
 
+/* Class seperator *******************************************************************************************/
 
 
+
+class Scoreboard {
+    init(boardId: Int, quizId: Int) {
+        self.boardId = boardId;
+        self.quizId = quizId;
+    }
+    
+    private let boardId: Int;
+    private let quizId: Int;
+    private var pointTable: [Int] = []
+    private var userIdTable: [Int] = []
+    
+    func SummarizeScores() {
+        // List quizes
+        if let quiz = database.FindQuiz(){
+            print(quiz)
+        }
+        // User choose quiz - implemented in FindQuiz?
+        
+        // Get quizID from selected quiz
+        
+        // Find userAnswers related to quizId in database
+        
+        // Find questions related to quiz
+        
+        // 1. For each question compared to correct answer and userAnswers - find points.  2. Make an array of users that took quiz.
+        
+        
+        // If an answer that user made was correct - increment that users "temporary point . array ?
+        // Sort point array samtidig med bruger temp array - find top 10 ?
+    }
+}
+
+
+
+/* Class seperator *******************************************************************************************/
 
 
 
 class Database {
     
-    var quizTable: [Quiz] = [];
-    var questionTable: [Question] = [];
-    var answerTable: [Answer] = [];
-    var userTable: [User] = [];
-    var userPoints: [Int] = []
+    private var quizTable: [Quiz] = [];
+    private var questionTable: [Question] = [];
+    private var answerTable: [Answer] = [];
+    private var userTable: [User] = [];
+    private var scoreboard: [Scoreboard] = [];
+    private var userPoints: [Int] = []
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
+    private var answerId: Int = 0;
+    private var quizId: Int = 0;
     
     /// Alernative approach: Count the the rows (User objects) of userTable and add 1 (id does not equal index number of a user in the array, be cause array starts at 0)
-    func getNewUserId() -> Int {
+    func GetNewUserId() -> Int {
         self.userCurrentId = self.userCurrentId + 1;
         return self.userCurrentId;
     }
     
     
-   private var scoreBoardId: Int = 0;
     
-   func getScoreBoardId() -> Int {
-        self.scoreBoardId = self.scoreBoardId + 1;
-        return self.scoreBoardId;
-    }
-    
-    
-    private var answerId: Int = 0;
-    
-    func getNewAnswerId() -> Int {
+    func GetNewAnswerId() -> Int {
         self.answerId = self.answerId + 1;
         return self.answerId;
     }
     
-    private var quizId: Int = 0;
     
-    func getNewQuizId() -> Int {
+    
+    func GetNewQuizId() -> Int {
         self.quizId = self.quizId + 1;
         return self.quizId;
     }
     
     
     
+    func GetQuizTable() -> [Quiz]{
+        return self.quizTable;
+    }
     
     
     
+    func GetUserTable() -> [User]{
+        return self.userTable;
+    }
+    
+    
+    
+    func AppendQuizTable(quiz: Quiz){
+        self.quizTable.append(quiz);
+    }
+
+    
+    
+    func AppendUserTable(user: User){
+        self.userTable.append(user);
+    }
+    
+    
+    
+    // TODO: Fairly important...
+    func CreateQuiz(){
+        // Make Quiz
+        // Make questions
+        // Make Answers
+    }
     
     
     /// Show all of the quizes in the database
@@ -311,56 +376,19 @@ var database: Database = Database();
 
 
 
-
-//
-
-class Scoreboard {
-    init(boardId: Int, quizId: Int) {
-        self.boardId = boardId;
-        self.quizId = quizId;
-    }
-    
-    let boardId: Int;
-    let quizId: Int;
-    var pointTable: [Int] = []
-    var userIdTable: [Int] = []
-
-    func SummarizeScores() {
-        // List quizes
-        if let quiz = database.FindQuiz(){
-            print(quiz)
-        }
-        // User choose quiz - implemented in FindQuiz?
-        
-        // Get quizID from selected quiz
-        
-        // Find userAnswers related to quizId in database
-        
-        // Find questions related to quiz
-        
-            // 1. For each question compared to correct answer and userAnswers - find points.  2. Make an array of users that took quiz.
-        
-       
-        // If an answer that user made was correct - increment that users "temporary point . array ?
-        // Sort point array samtidig med bruger temp array - find top 10 ?
-    }
-}
-
-
-
 /* Class seperator *******************************************************************************************/
 
 
 
 /// The main interface which intiates the program
 class Interface {
-    var currentUser: User?;
+    private var currentUser: User?;
     
     /// Empty if user is logged in with account
     /// - Used for alias names
-    var userName: String = "";
-    var didUserQuit: Bool = false;
-    var isAliasUserLoggedIn: Bool = false;
+    private var userName: String = "";
+    private var didUserQuit: Bool = false;
+    private var isAliasUserLoggedIn: Bool = false;
     
     init(){
         print("Welcome to CaBeMa Quiz\nWe hope that you enjoy the quiz program");
@@ -373,10 +401,7 @@ class Interface {
     /// Shows the main menu
     func ShowMenu(){
 
-        
-        
-        
-        /*
+        /* TODO : DELETE THIS
         for i in database.quizTable {
             print(i.getQuizTitle());
         }
@@ -441,12 +466,11 @@ class Interface {
     func Quit(){
         print("Thank you for using CaBeMa");
         self.didUserQuit = true;
-        
     }
     
     
-  
-    func loginUsername() -> User?{
+    
+    func LoginUsername() -> User?{
         let userNameAttempts: Int = 3;
         var currentUserNameAttempt: Int = 0;
         
@@ -455,7 +479,7 @@ class Interface {
             print("Please type username: ");
             let input = readLine()
             
-            for user in database.userTable{
+            for user in database.GetUserTable(){
                 if user.GetUserName().uppercased() == input?.uppercased(){
                     return user
                 }
@@ -470,7 +494,7 @@ class Interface {
     
     
     
-    func loginPassword(user: User) -> Bool {
+    func LoginPassword(user: User) -> Bool {
         let loginAttempts: Int = 3;
         var currentLoginAttempt: Int = 0;
         
@@ -499,10 +523,10 @@ class Interface {
         // I would suggest these commented out / removed - and implement control in login username / password
         //while loggingIn == true {
             
-            userLoggingIn = loginUsername()
+            userLoggingIn = LoginUsername()
             
             if let userSelected = userLoggingIn{
-                if(loginPassword(user: userSelected)){
+                if(LoginPassword(user: userSelected)){
                     currentUser = userSelected;
                     // TODO: @Casper, consider this:
                     /*
@@ -543,7 +567,7 @@ class Interface {
     }
 
     
-    // Temple of DOOM user creation
+    
     func CreateUser(){
         print("Please input username: ", terminator: "");
         if let username = readLine(){
@@ -559,7 +583,7 @@ class Interface {
                             if let eMail = readLine(){
                                     
                                 let newUser = User(userFirstName: firstName, userMiddleName: middleName, userLastName: LastName, userName: username, eMail: eMail, password: password);
-                                database.userTable.append(newUser);
+                                database.AppendUserTable(user: newUser);
             
                                 print("\n\n\nUser has been created - please login");
                                 let _ = readLine();
@@ -583,23 +607,9 @@ class Interface {
             self.ShowMainMenu();
         }
     }
-    
-    
-    
-    func ShowProfileCredentials(){
-        if let theCurrentUser = currentUser{
-            print("\n\n\n\nWelcome to your profile: \(theCurrentUser.GetUserName())")
-            print("FullName: \(theCurrentUser.GetFullName())")
-            print("This is your connected e-mail: \(theCurrentUser.GetUserEmail())")
-            print("Current points: TODO: Calculate HERE dynamically")
-            print("Press any key to return to main manu...")
-            let _ = readLine();
-        }
-    }
 
     
     
-    /// Shows the main menu
     func ShowMainMenu(){
         var userInputUC = "";
         if let theCurrentUser = currentUser{
@@ -670,6 +680,57 @@ class Interface {
             }
         }
     }
+    
+    
+    // TODO
+    func GoToQuizzes() {
+        // Find Quiz
+        // Run Quiz
+        // Show statistics?
+        // End Quiz
+    }
+    
+    
+    // TODO ... delete this or below function - if option 2, send user to a scoreboard...
+    func GoToScoreboard() {
+        // Call a specific scoreboard function
+    }
+    
+    
+    // TODO ... if a singleScore is requested - go directly to show scores of quizId - otherwise show selection menu...
+    func SummarizeScores(singleScore: Bool, quizId: Int) {
+        // Activate scoreboard function
+        // List quizes
+        if let quiz = database.FindQuiz(){
+            print(quiz)
+        }
+        // User choose quiz - implemented in FindQuiz?
+        
+        // Get quizID from selected quiz
+        
+        // Find userAnswers related to quizId in database
+        
+        // Find questions related to quiz
+        
+        // 1. For each question compared to correct answer and userAnswers - find points.  2. Make an array of users that took quiz.
+        
+        
+        // If an answer that user made was correct - increment that users "temporary point . array ?
+        // Sort point array samtidig med bruger temp array - find top 10 ?
+    }
+    
+    
+    
+    func ShowProfileCredentials(){
+        if let theCurrentUser = currentUser{
+            print("\n\n\n\nWelcome to your profile: \(theCurrentUser.GetUserName())")
+            print("FullName: \(theCurrentUser.GetFullName())")
+            print("This is your connected e-mail: \(theCurrentUser.GetUserEmail())")
+            print("Current points: TODO: Calculate HERE dynamically")
+            print("Press any key to return to main manu...")
+            let _ = readLine();
+        }
+    }
 }
 
 
@@ -695,7 +756,7 @@ func populateDatabase(){
     while i < makeUsers.count {
         let newUser = User(userFirstName: makeUsers[i], userMiddleName:  makeUsers[i+1], userLastName:  makeUsers[i+2],
                            userName:  makeUsers[i+3], eMail:  makeUsers[i+4], password:  makeUsers[i+5])
-        database.userTable.append(newUser);
+        database.AppendUserTable(user: newUser);
         i+=6;
     }
     /* Make some users */
@@ -712,7 +773,7 @@ func populateDatabase(){
     // Force unwrap used below, because it is merely static data being loaded
     while i < makeQuizes.count {
         let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!, isQuestionsRandom: Bool(makeQuizes[i+3])!, minimumToAnswer: Int(makeQuizes[i+4])!);
-        database.quizTable.append(newQuiz);
+        database.AppendQuizTable(quiz: newQuiz);
         i+=5;
     }
     /* Make some Quizes */
