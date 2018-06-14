@@ -115,6 +115,7 @@ class Question {
     
     func CreateAnswers(question: Question) {
         var makingAnswers = true;
+        var answerNumber = 1;
         while(makingAnswers){
             print("\n\nDo you want to add a new answer? Y/N:", terminator: " ");
             if let userChoice = readLine(){
@@ -122,9 +123,9 @@ class Question {
                 case "Y":
                     print("Please type a new answer:", terminator: " ");
                     if let questionAnswer = readLine(){
-                        let newAnswer = Answer(questionId: question.GetQuestionId(), answerText: questionAnswer)
+                        let newAnswer = Answer(questionId: question.GetQuestionId(), answerLocalNumber: answerNumber, answerText: questionAnswer);
+                        answerNumber += 1;
                         database.AppendAnswerTable(answer: newAnswer);
-//                        question.correctAnswerId
                     }
                 case "N":
                     var correctAnswerChosen = false;
@@ -213,10 +214,12 @@ class Answer{
     private var answerId: Int;
     private var questionId: Int;
     private var answerText: String;
+    private var answerLocalNumber: Int;
     
-    init(questionId: Int, answerText: String){
+    init(questionId: Int, answerLocalNumber: Int, answerText: String){
         self.questionId = questionId;
         self.answerText = answerText;
+        self.answerLocalNumber = answerLocalNumber;
         self.answerId = database.GetNewAnswerId();
         
     }
@@ -231,6 +234,10 @@ class Answer{
     
     func GetAnswerText() -> String{
         return self.answerText;
+    }
+    
+    func GetAnswerLocalNumber() -> Int{
+        return self.answerLocalNumber;
     }
 }
 
@@ -766,11 +773,11 @@ class Interface {
                                 print("\n\n\(question.GetQuestion())");
                                 for answer in database.GetAnswerTable(){
                                     if(answer.GetQuestionId() == question.GetQuestionId()){
-                                        print("Id: \(answer.GetAnswerId()): \(answer.GetAnswerText())");
+                                        print("Id: \(answer.GetAnswerLocalNumber()): \(answer.GetAnswerText())");
                                     }
                                 }
                                 
-                                print("Please choose the id that corresponds to the answer:", terminator: " ");
+                                print("Please choose the correct number:", terminator: " ");
                                 if let userAnswer = readLine(), let userAnswerInt = Int(userAnswer){
                                     if(question.GetCorrectAnswer() == userAnswerInt){
                                         userPoint += question.GetPoints();
@@ -791,8 +798,8 @@ class Interface {
                             }
                         }
                         
-                        print("\n\nQuiz over - points: \(userPoint)");
-                        
+                        print("\n\nQuiz over - points: \(userPoint)\nPress ane key to continue");
+                        let _ = readLine();
                     }
                     
                
@@ -853,7 +860,7 @@ class Interface {
             |--------------------------------|
             """);
         for user in database.GetUserTable(){
-            print("| \((user.GetUserFirstName()))\t\t\t\t|\t\((self.SummarizeScores(userId: user.GetUserId())))\t\t|");
+            print("| \((user.GetUserFirstName().padding(toLength: 25, withPad: " ", startingAt: 0)))| \(String(self.SummarizeScores(userId: user.GetUserId())).padding(toLength: 4, withPad: " ", startingAt: 0))|");
         }
             
         print("|--------------------------------|\n\n");
@@ -905,6 +912,7 @@ class Interface {
 
 
 /// This creates some objects in the database so that it is not empty
+// Force unwrapping is used to make this compact - check inputs :)
 func populateDatabase(){
     
     /* Make some users */
@@ -928,6 +936,7 @@ func populateDatabase(){
     
     
     /* Make some Quizes */
+    // Last number is userId that created quiz
     let makeQuizes: [String] = [
         "Computer Science", "Basic questions regarding computer science", "1"
     ];
@@ -943,45 +952,47 @@ func populateDatabase(){
     
     
     // Make Questions
+    // "quizId" , "correctAnswerId" , "text" , "points for correct answer"
     let makeQuestions: [String] = [
-        "1", "5", "What is HDD?", "1",
-        "1", "7", "What is the best cheapest of these?", "1",
-        "1", "8", "What is the correct reprensation of a sacartic face?"
+        "1", "5", "What is HDD?", "5",
+        "1", "2", "What is the cheapest of these?", "3",
+        "1", "7", "What is the correct reprensation of a sacartic face?", "3"
     ];
     
     i = 0;
     // Force unwrap used below, because it is merely static data being loaded
     while i < makeQuestions.count {
-        let newQuestion = Question(quizId: Int(makeQuestions[i])!, correctAnswerId: Int(makeQuestions[i+1])!, text: makeQuestions[i+2], points: 1);
+        let newQuestion = Question(quizId: Int(makeQuestions[i])!, correctAnswerId: Int(makeQuestions[i+1])!, text: makeQuestions[i+2], points: Int(makeQuestions[i+3])!);
         database.AppendQuestionTable(question: newQuestion);
         i+=4;
     }
     
     
     // Make answers
+    // "question number", "answer number to local question", "question"
     let makeAnswers: [String] = [
-        "1", "Highly Disfunctional Diagnosies",
-        "1", "Heavy Drive Disk",
-        "1", "High Density Drive",
-        "1", "Hydraulic Disk Drive",
-        "1", "Hard Disk Drive",
-        "2", "MacBook",
-        "2", "Toshiba PC",
-        "3", "1Head",
-        "3", "2Head",
-        "3", "3Head",
-        "3", "5Head",
-        "3", "monkaS",
-        "3", "1/2Head",
-        "3", "4Head",
+        "1", "1", "Highly Disfunctional Diagnosies",
+        "1", "2", "Heavy Drive Disk",
+        "1", "3", "High Density Drive",
+        "1", "4", "Hydraulic Disk Drive",
+        "1", "5", "Hard Disk Drive",
+        "2", "1", "MacBook",
+        "2", "2", "Toshiba PC",
+        "3", "1", "1Head",
+        "3", "2", "2Head",
+        "3", "3", "3Head",
+        "3", "4", "5Head",
+        "3", "5", "monkaS",
+        "3", "6", "1/2Head",
+        "3", "7", "4Head"
     ];
     
     i = 0;
     // Force unwrap used below, because it is merely static data being loaded
     while i < makeAnswers.count {
-        let newAnswer = Answer(questionId: Int(makeAnswers[i])!, answerText: makeAnswers[i+1])
+        let newAnswer = Answer(questionId: Int(makeAnswers[i])!, answerLocalNumber: Int(makeAnswers[i+1])!, answerText: makeAnswers[i+2])
         database.AppendAnswerTable(answer: newAnswer);
-        i+=2;
+        i+=3;
     }
     // Make answers
 }
