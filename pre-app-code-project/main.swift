@@ -130,29 +130,38 @@ class Question {
                     var correctAnswerChosen = false;
                     while(!correctAnswerChosen){
                         print("\n\n\n\n\n\nYou have made the following answers:")
+                        var amountOfAnswers=0;
                         for answer in database.GetAnswerTable(){
                             if(answer.GetQuestionId() == question.GetQuestionId()){
+                                amountOfAnswers += 1;
                                 print("Id: \(answer.GetAnswerId()):\t\(answer.GetAnswerText())");
                             }
                         }
-                        print("Please type the Id of correct answer:", terminator: " ");
-                        if let correctAnswerChoice = readLine(), let correctAnswerInt = Int(correctAnswerChoice){
-                            
-                            // Checks that the id is indeed connected to the question
-                            for answer in database.GetAnswerTable(){
-                                if(answer.GetQuestionId() == question.GetQuestionId()){
-                                    print(answer.GetAnswerId());
-                                    print(correctAnswerInt);
-                                    
-                                    if(answer.GetAnswerId() == correctAnswerInt){
-                                        correctAnswerChosen = true;
+                        if(amountOfAnswers < 2){
+                            print("Minimum possible answers is 2");
+                            correctAnswerChosen = true;
+                            } else {
+                            print("Please type the Id of correct answer:", terminator: " ");
+                            if let correctAnswerChoice = readLine(), let correctAnswerInt = Int(correctAnswerChoice){
+                                
+                                // Checks that the id is indeed connected to the question
+                                for answer in database.GetAnswerTable(){
+                                    if(answer.GetQuestionId() == question.GetQuestionId()){
+                                        print(answer.GetAnswerId());
+                                        print(correctAnswerInt);
+                                        
+                                        if(answer.GetAnswerId() == correctAnswerInt){
+                                            correctAnswerChosen = true;
+                                        }
                                     }
                                 }
                             }
+                            
+                            print("\n\nQuestion has been saved");
+                            makingAnswers = false;
+                        
                         }
                     }
-                    print("\n\nQuestion has been saved");
-                    makingAnswers = false;
                 default:
                     print("Selection not recognized");
                 }
