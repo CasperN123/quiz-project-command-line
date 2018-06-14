@@ -745,9 +745,6 @@ class Interface {
                     if var chosenQuiz = database.FindQuiz(){
                         print("Wow, the user selected a quiz with the id of: \(chosenQuiz.GetQuizId())");
                         
-                        print("You have chosen");
-                        print(chosenQuiz.GetQuizTitle());
-                        print(chosenQuiz.GetQuizDescription());
                         
                         var fourHead = readLine();
                         
