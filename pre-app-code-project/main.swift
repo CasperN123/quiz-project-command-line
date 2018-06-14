@@ -1,10 +1,6 @@
 //
-//  main.swift
-//  pre-app-code-project
-//
-//  Created by (ʘᗩʘ’) on 12/06/2018.
-//  Copyright © 2018 4Head. All rights reserved.
-//
+// CaBeMa Quiz
+// CLI quiz program
 
 import Foundation
 
@@ -99,6 +95,7 @@ class Question {
     
     private var questionId : Int
     private var quizId : Int
+    /// This is the look pretty id - that is easier for users to understand
     private var correctAnswerId : Int
     private var text : String
     private var points: Int;
@@ -964,7 +961,7 @@ func populateDatabase(){
     // Make answers
     // "question number", "answer number to local question", "question"
     let makeAnswers: [String] = [
-        "1", "1", "Highly Disfunctional Diagnosis",
+        "1", "1", "Highly Dysfunctional Diagnosis",
         "1", "2", "Heavy Drive Disk",
         "1", "3", "High Density Drive",
         "1", "4", "Hydraulic Disk Drive",
@@ -1001,6 +998,4 @@ populateDatabase();
 /// This creates and starts the program
 var main = Interface();
 
-var donger4Head = print("4Head")
-
-
+var donger4Head: Any = print("4Head")
