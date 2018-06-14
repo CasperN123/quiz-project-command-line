@@ -252,6 +252,18 @@ class UserAnswer{
         self.userId = userId;
         
     }
+    
+    func GetAnswerId() -> Int{
+        return self.answerId;
+    }
+    
+    func GetQuestionId() -> Int{
+        return self.questionId;
+    }
+    
+    func GetUserId() -> Int{
+        return self.userId;
+    }
 }
 
 
@@ -341,6 +353,7 @@ class Database {
         print(userHighscores)
     }
 }
+    
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
     private var answerId: Int = 0;
@@ -848,42 +861,32 @@ class Interface {
             |--------------------------------|
             | BEST QUIZZERS IN THE LONELY CS |
             |--------------------------------|
-            | \((self.currentUser!.GetUserFirstName())) | \(database.sortedHighscore())|
-            |--------|-----------------------|
-            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
-            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
-            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
-            | \((self.currentUser!.GetUserFirstName())) | \((database.userPoints))|
-            |--------------------------------|
+            """);
+        for user in database.GetUserTable(){
+            print("| \((user.GetUserFirstName())) | \((self.SummarizeScores(userId: user.GetUserId())))|");
+        }
             
             
-            Press the right key to leave :)
-            
-            
-            """, terminator: " ");
-        readLine()
+        print("Press the right key to leave :)");
+        let _ = readLine();
+        
     }
     
-    func SummarizeScores(singleScore: Bool, quizId: Int) {
-       
-        if let quiz = database.FindQuiz(){
-            print(quiz)
+    func SummarizeScores(userId: Int) -> Int{
+        var summarizedPoints = 0;
+        for answer in database.GetUserAnswerTable(){
+            
+            for question in database.GetQuestionTable(){
+                if(answer.GetUserId() == userId){
+                    if(answer.GetAnswerId() == question.GetCorrectAnswer()){
+                        summarizedPoints += question.GetPoints();
+                    }
+                }
+            }
         }
         
-    
-        // User choose quiz - implemented in FindQuiz?
+        return summarizedPoints;
         
-        // Get quizID from selected quiz
-        
-        // Find userAnswers related to quizId in database
-        
-        // Find questions related to quiz
-        
-        // 1. For each question compared to correct answer and userAnswers - find points.  2. Make an array of users that took quiz.
-        
-        
-        // If an answer that user made was correct - increment that users "temporary point . array ?
-        // Sort point array samtidig med bruger temp array - find top 10 ?
     }
     
     
