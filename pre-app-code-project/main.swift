@@ -24,6 +24,27 @@ class Quiz {
     // Functions for Quiz class
     
     
+    func CreateQuestions() {
+        var makingQuestions = true;
+        while(makingQuestions){
+            print("Do you want to a dd a new question? Y/N:", terminator: " ");
+            if let userChoice = readLine(){
+                switch userChoice.uppercased(){
+                case "Y":
+                    print("Please type a new question:", terminator: " ");
+                    if let userQuestion = readLine(){
+                        //let newQuestion = Question(quizId: , correctAnswerId: <#T##Int#>, text: <#T##String#>, points: <#T##Int#>)
+                    }
+                case "N":
+                    print("Quiz has been saved");
+                    makingQuestions = false;
+                    print("Exiting");
+                default:
+                    print("Selection not recognized");
+                }
+            }
+        }
+    }
     /*
      
      
@@ -36,25 +57,10 @@ class Quiz {
      <#function body#>
      }
      
-     func ShowScoreBoard(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
      func ListQuestions(<#parameters#>) -> <#return type#> {
      <#function body#>
      }
      
-     func ChangeQuestionOrder(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
-     func EditQuestion(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
-     
-     func CreateQuestion(<#parameters#>) -> <#return type#> {
-     <#function body#>
-     }
      
      func DeleteQuestion(<#parameters#>) -> <#return type#> {
      <#function body#>
@@ -94,7 +100,7 @@ class Question {
     private var quizId : Int
     private var correctAnswerId : Int
     private var text : String
-    var points : Int
+    private var points : Int
     
     
     // Functions for Question class
@@ -337,13 +343,13 @@ class Database {
     
     // TODO: Fairly important...
     func CreateQuiz(user: User){
-        print("Please input title: ", terminator: "");
+        print("Please input quiz title: ", terminator: "");
         if let title = readLine(){
-            print("Please input description: ", terminator: "");
+            print("Please input quiz description: ", terminator: "");
             if let description = readLine(){
                 let newQuiz = Quiz(title: title, description: description, creator: user.GetUserId());
                 self.AppendQuizTable(quiz: newQuiz);
-                
+                newQuiz.CreateQuestions();
             }
         }
     }
@@ -529,51 +535,21 @@ class Interface {
     func LoginUser(){
     
         var userLoggingIn: User?;
-        //var loggingIn = true
-        // I would suggest these commented out / removed - and implement control in login username / password
-        //while loggingIn == true {
             
-            userLoggingIn = LoginUsername()
-            
-            if let userSelected = userLoggingIn{
-                if(LoginPassword(user: userSelected)){
-                    currentUser = userSelected;
-                    // TODO: @Casper, consider this:
-                    /*
-                     var loadingSymbol: [Character] = ["/", "-", "\\", "|", "/", "-", "\\", "|"];
-                     for symbol in loadingSymbol{
-                        print("Logging in... \(symbol)");
-                     usleep(500_000);
-                     loggingIn=false
-                     }
-                     */
-                    var loading = true
-                    while loading == true {
-                        print("Logging in... / \r")
-                        usleep(500000)
-                        print("Logging in... - \r")
-                        usleep(500000)
-                        print("Logging in... \\ \r")
-                        usleep(500000)
-                        print("Logging in... | \r")
-                        usleep(500000)
-                        print("Logging in... / \r")
-                        usleep(500000)
-                        print("Logging in... - \r")
-                        usleep(500000)
-                        print("Logging in... \\ \r")
-                        usleep(500000)
-                        print("Logging in... | \r")
-                        usleep(500000)
-                        
-                        
-                        //loggingIn=false
-                        loading = false
-                    }
-                    ShowMainMenu()
-                }
+        userLoggingIn = LoginUsername()
+        
+        if let userSelected = userLoggingIn{
+            if(LoginPassword(user: userSelected)){
+                currentUser = userSelected;
+                
+                 let loadingSymbol: [Character] = ["/", "-", "\\", "|", "/", "-", "\\", "|"];
+                 for symbol in loadingSymbol{
+                    print("Logging in... \(symbol)");
+                    usleep(100_000);
+                 }
+                ShowMainMenu()
             }
-        //}
+        }
     }
 
     
@@ -652,8 +628,16 @@ class Interface {
                 switch userInputUC {
                     
                 case "Q":
-                    if let chosenQuizId = database.FindQuiz(){
-                        print("Wow, the user selected a quiz with the id of: \(chosenQuizId)");
+                    if let chosenQuiz = database.FindQuiz(){
+                        print("Wow, the user selected a quiz with the id of: \(chosenQuiz.GetQuizId())");
+                        
+                        print("You have chosen");
+                        print(chosenQuiz.GetQuizTitle());
+                        print(chosenQuiz.GetQuizDescription());
+                        
+                        let _ = readLine();
+                        
+                        // Svar m.v.
                     }
                     
                 case "C":
