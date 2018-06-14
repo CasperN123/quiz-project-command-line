@@ -101,7 +101,7 @@ class Question {
     private var quizId : Int
     private var correctAnswerId : Int
     private var text : String
-    private var points : Int
+    var points : Int
     
     
     func ListAnswers(question: Question){
@@ -328,7 +328,7 @@ class Database {
     private var answerTable: [Answer] = [];
     private var userTable: [User] = [];
     private var userAnswerTable: [UserAnswer] = [];
-    private var userPoints: [Int] = []
+    var userPoints: [Int] = []
     
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
@@ -376,8 +376,7 @@ class Database {
     func GetQuestionTable() -> [Question]{
         return self.questionTable;
     }
-    
-    
+   
     
     
     func GetUserTable() -> [User]{
@@ -837,7 +836,7 @@ class Interface {
             print("\n\n\n\nWelcome to your profile: \(theCurrentUser.GetUserName())")
             print("FullName: \(theCurrentUser.GetFullName())")
             print("This is your connected e-mail: \(theCurrentUser.GetUserEmail())")
-            print("Current points: TODO: Calculate HERE dynamically")
+            print("Current points: \(database.userPoints)")
             print("Press any key to return to main manu...")
             let _ = readLine();
         }
