@@ -101,7 +101,7 @@ class Question {
     private var quizId : Int
     private var correctAnswerId : Int
     private var text : String
-    var points : Int
+    private var points: Int;
     
     
     func ListAnswers(question: Question){
@@ -117,6 +117,7 @@ class Question {
         var makingAnswers = true;
         var answerNumber = 1;
         while(makingAnswers){
+            
             print("\n\nDo you want to add a new answer? Y/N:", terminator: " ");
             if let userChoice = readLine(){
                 switch userChoice.uppercased(){
@@ -131,35 +132,27 @@ class Question {
                     var correctAnswerChosen = false;
                     while(!correctAnswerChosen){
                         print("\n\n\n\n\n\nYou have made the following answers:")
-                        var amountOfAnswers=0;
                         for answer in database.GetAnswerTable(){
                             if(answer.GetQuestionId() == question.GetQuestionId()){
-                                amountOfAnswers += 1;
-                                print("Id: \(answer.GetAnswerId()):\t\(answer.GetAnswerText())");
+                                print("Id: \(answer.GetAnswerLocalNumber()):\t\(answer.GetAnswerText())");
                             }
                         }
-                        if(amountOfAnswers < 2){
+                        if(answerNumber < 3){
                             print("Minimum possible answers is 2");
                             correctAnswerChosen = true;
-                            } else {
+                        } else {
                             print("Please type the Id of correct answer:", terminator: " ");
                             if let correctAnswerChoice = readLine(), let correctAnswerInt = Int(correctAnswerChoice){
                                 
                                 // Checks that the id is indeed connected to the question
-                                for answer in database.GetAnswerTable(){
-                                    if(answer.GetQuestionId() == question.GetQuestionId()){
-                                        print(answer.GetAnswerId());
-                                        print(correctAnswerInt);
-                                        
-                                        if(answer.GetAnswerId() == correctAnswerInt){
-                                            correctAnswerChosen = true;
-                                        }
-                                    }
+                                if(correctAnswerInt > 0 && correctAnswerInt < answerNumber){
+                                    correctAnswerChosen = true;
+                                    self.correctAnswerId = correctAnswerInt;
                                 }
                             }
                             
-                            print("\n\nQuestion has been saved");
-                            makingAnswers = false;
+                        print("\n\nQuestion has been saved");
+                        makingAnswers = false;
                         
                         }
                     }
@@ -971,7 +964,7 @@ func populateDatabase(){
     // Make answers
     // "question number", "answer number to local question", "question"
     let makeAnswers: [String] = [
-        "1", "1", "Highly Disfunctional Diagnosies",
+        "1", "1", "Highly Disfunctional Diagnosis",
         "1", "2", "Heavy Drive Disk",
         "1", "3", "High Density Drive",
         "1", "4", "Hydraulic Disk Drive",
