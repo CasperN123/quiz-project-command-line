@@ -342,17 +342,7 @@ class Database {
     private var answerTable: [Answer] = [];
     private var userTable: [User] = [];
     private var userAnswerTable: [UserAnswer] = [];
-    var userPoints: [Int] = [1,3,4,5,6,7,34543,3453,123,414,42,3,5,21,45]
-    
-    func sortedHighscore() {
-    for points in (userPoints.sorted())
-    {
-    let userHighscores = points
-        
-        
-        print(userHighscores)
-    }
-}
+
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
     private var userCurrentId: Int = 0;
@@ -863,10 +853,10 @@ class Interface {
             |--------------------------------|
             """);
         for user in database.GetUserTable(){
-            print("| \((user.GetUserFirstName())) | \((self.SummarizeScores(userId: user.GetUserId())))|");
+            print("| \((user.GetUserFirstName()))\t\t\t\t|\t\((self.SummarizeScores(userId: user.GetUserId())))\t\t|");
         }
             
-            
+        print("|--------------------------------|\n\n");
         print("Press the right key to leave :)");
         let _ = readLine();
         
@@ -896,7 +886,6 @@ class Interface {
             print("\n\n\n\nWelcome to your profile: \(theCurrentUser.GetUserName())")
             print("FullName: \(theCurrentUser.GetFullName())")
             print("This is your connected e-mail: \(theCurrentUser.GetUserEmail())")
-            print("Current points: \(database.userPoints)")
             print("Press any key to return to main manu...")
             let _ = readLine();
         }
