@@ -17,8 +17,6 @@ class Quiz {
     private var title : String
     private var description : String
     private var creator : Int
-    private var isQuestionsRandom : Bool
-    private var minimumToAnswer : Int
   
     
     
@@ -73,14 +71,12 @@ class Quiz {
         return self.quizId;
     }
     
-    init(title: String, description: String, creator: Int, isQuestionsRandom: Bool, minimumToAnswer: Int) {
+    init(title: String, description: String, creator: Int) {
         
         self.quizId = database.GetNewQuizId();
         self.title = title
         self.description = description
         self.creator = creator
-        self.isQuestionsRandom = isQuestionsRandom
-        self.minimumToAnswer = minimumToAnswer
     }
 }
 
@@ -253,38 +249,6 @@ class User {
 
 
 
-class Scoreboard {
-    init(boardId: Int, quizId: Int) {
-        self.boardId = boardId;
-        self.quizId = quizId;
-    }
-    
-    private let boardId: Int;
-    private let quizId: Int;
-    private var pointTable: [Int] = []
-    private var userIdTable: [Int] = []
-    
-    func SummarizeScores() {
-        // List quizes
-        if let quiz = database.FindQuiz(){
-            print(quiz)
-        }
-        // User choose quiz - implemented in FindQuiz?
-        
-        // Get quizID from selected quiz
-        
-        // Find userAnswers related to quizId in database
-        
-        // Find questions related to quiz
-        
-        // 1. For each question compared to correct answer and userAnswers - find points.  2. Make an array of users that took quiz.
-        
-        
-        // If an answer that user made was correct - increment that users "temporary point . array ?
-        // Sort point array samtidig med bruger temp array - find top 10 ?
-    }
-}
-
 
 
 /* Class seperator *******************************************************************************************/
@@ -297,7 +261,6 @@ class Database {
     private var questionTable: [Question] = [];
     private var answerTable: [Answer] = [];
     private var userTable: [User] = [];
-    private var scoreboard: [Scoreboard] = [];
     private var userPoints: [Int] = []
     
     /// userCurrentId is the increment of the key userId. It starts at 0, and not 1 because we increment it by 1 before returning the value.
@@ -358,10 +321,16 @@ class Database {
     
     
     // TODO: Fairly important...
-    func CreateQuiz(){
-        // Make Quiz
-        // Make questions
-        // Make Answers
+    func CreateQuiz(user: User){
+        print("Please input title: ", terminator: "");
+        if let title = readLine(){
+            print("Please input description: ", terminator: "");
+            if let description = readLine(){
+                var newQuiz = Quiz(title: title, description: description, creator: user.GetUserId());
+                self.AppendQuizTable(quiz: newQuiz);
+                
+            }
+        }
     }
     
     
@@ -607,7 +576,7 @@ class Interface {
                         if let LastName = readLine(){
                             print("Please input e-mail: ", terminator: "");
                             if let eMail = readLine(){
-                                    
+                                
                                 let newUser = User(userFirstName: firstName, userMiddleName: middleName, userLastName: LastName, userName: username, eMail: eMail, password: password);
                                 database.AppendUserTable(user: newUser);
             
@@ -648,6 +617,7 @@ class Interface {
                     | Letter | Function              |
                     |--------|-----------------------|
                     |    Q   | Go to quizes          |
+                    |    C   | Create Quiz           |
                     |    S   | Go to scoreboards     |
                     |    U   | Go to user settings   |\(!self.isAliasUserLoggedIn ? "\n|    A   | Profile               |" : "" )
                     |    X   | Exit to main menu     |
@@ -669,6 +639,11 @@ class Interface {
                 case "Q":
                     if let chosenQuizId = database.FindQuiz(){
                         print("Wow, the user selected a quiz with the id of: \(chosenQuizId)");
+                    }
+                    
+                case "C":
+                    if let user = self.currentUser{
+                        database.CreateQuiz(user: user);
                     }
                     
                 case "S":
@@ -717,11 +692,6 @@ class Interface {
     }
     
     
-    // TODO ... delete this or below function - if option 2, send user to a scoreboard...
-    func GoToScoreboard() {
-        // Call a specific scoreboard function
-    }
-    
     
     // TODO ... if a singleScore is requested - go directly to show scores of quizId - otherwise show selection menu...
     func SummarizeScores(singleScore: Bool, quizId: Int) {
@@ -757,6 +727,12 @@ class Interface {
             let _ = readLine();
         }
     }
+    
+    
+    func GetCurrentUser() -> User?{
+        return self.currentUser
+    }
+    
 }
 
 
@@ -790,17 +766,17 @@ func populateDatabase(){
     
     /* Make some Quizes */
     let makeQuizes: [String] = [
-        "Computer Science", "Basic questions regarding computer science", "1", "false", "1",
-        "Mathematics", "Fundamental mathematics used within programming", "2", "false", "1",
-        "Computer Science 2", "Mediocre questions regarding computer science", "3", "false", "1"
+        "Computer Science", "Basic questions regarding computer science", "1",
+        "Mathematics", "Fundamental mathematics used within programming", "2",
+        "Computer Science 2", "Mediocre questions regarding computer science", "3"
     ];
 
     i = 0;
     // Force unwrap used below, because it is merely static data being loaded
     while i < makeQuizes.count {
-        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!, isQuestionsRandom: Bool(makeQuizes[i+3])!, minimumToAnswer: Int(makeQuizes[i+4])!);
+        let newQuiz = Quiz(title: makeQuizes[i], description: makeQuizes[i+1], creator: Int(makeQuizes[i+2])!);
         database.AppendQuizTable(quiz: newQuiz);
-        i+=5;
+        i+=3;
     }
     /* Make some Quizes */
     
