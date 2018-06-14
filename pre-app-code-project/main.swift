@@ -60,14 +60,14 @@ class Quiz {
      <#function body#>
      }*/
     
-    func getQuizTitle() -> String{
+    func GetQuizTitle() -> String{
         return self.title;
     }
     func GetQuizDescription() -> String{
         return self.description;
     }
     
-    func getQuizId() -> Int{
+    func GetQuizId() -> Int{
         return self.quizId;
     }
     
@@ -320,13 +320,28 @@ class Database {
     
     
     
+    // TODO
+    func ShowQuizzes() {
+        print("The following quizes exist:");
+        // Find Quiz
+        // Run Quiz
+        // Show statistics?
+        // End Quiz
+        print("Please choose a quiz:", terminator: " ");
+        if let userSelectedQuiz = readLine(){
+            print(userSelectedQuiz);
+        }
+    }
+    
+    
+    
     // TODO: Fairly important...
     func CreateQuiz(user: User){
         print("Please input title: ", terminator: "");
         if let title = readLine(){
             print("Please input description: ", terminator: "");
             if let description = readLine(){
-                var newQuiz = Quiz(title: title, description: description, creator: user.GetUserId());
+                let newQuiz = Quiz(title: title, description: description, creator: user.GetUserId());
                 self.AppendQuizTable(quiz: newQuiz);
                 
             }
@@ -340,7 +355,7 @@ class Database {
         print("The following quizes are in database");
         print("Quiz number:\t\tQuiz title:\t\t\t\tQuiz description:");
         for quiz in database.quizTable {
-            print("\(quiz.getQuizId())\t\t\t\t\(quiz.getQuizTitle())\t\t\t\t\(quiz.GetQuizDescription())\t\t");
+            print("\(quiz.GetQuizId())\t\t\t\t\(quiz.GetQuizTitle())\t\t\t\t\(quiz.GetQuizDescription())\t\t");
         }
         
         /// For controlling whether a database with the selected id exists
@@ -355,7 +370,7 @@ class Database {
                 
                 /// Based on userInput - checks if a database with the Id exists
                 for quiz in database.quizTable{
-                    if(quiz.getQuizId() == userInt){
+                    if(quiz.GetQuizId() == userInt){
                         
                         /* Note regarding below: Since the loop will run until a correct input has been made, and the while loop will break at the return value, this boolean seems pointless - if it was not for the posibility to choose 0 and abort */
                         correctInput = true;
@@ -680,15 +695,6 @@ class Interface {
                 
             }
         }
-    }
-    
-    
-    // TODO
-    func GoToQuizzes() {
-        // Find Quiz
-        // Run Quiz
-        // Show statistics?
-        // End Quiz
     }
     
     
