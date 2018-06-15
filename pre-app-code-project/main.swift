@@ -867,7 +867,7 @@ class Interface {
             
             for question in database.GetQuestionTable(){
                 if(answer.GetUserId() == userId){
-                    if(answer.GetAnswerId() == question.GetCorrectAnswer()){
+                    if(answer.GetAnswerId() == question.GetCorrectAnswer() && answer.GetQuestionId() == question.GetQuestionId()){
                         summarizedPoints += question.GetPoints();
                     }
                 }
