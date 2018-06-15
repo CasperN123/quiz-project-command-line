@@ -729,8 +729,7 @@ class Interface {
                     |--------------------------------|
                     | Letter | Function              |
                     |--------|-----------------------|
-                    |    Q   | Go to quizes          |
-                    |    C   | Create Quiz           |
+                    |    Q   | Go to quizes          |\(!self.isAliasUserLoggedIn ? "\n|    C   | Create Quiz           |" : "" )
                     |    S   | Go to scoreboards     |\(!self.isAliasUserLoggedIn ? "\n|    A   | Profile               |" : "" )
                     |    X   | Exit to main menu     |
                     |--------------------------------|
@@ -794,8 +793,10 @@ class Interface {
                     
                
                 case "C":
-                    if let user = self.currentUser{
-                        database.CreateQuiz(user: user);
+                    if(!self.isAliasUserLoggedIn){
+                        if let user = self.currentUser{
+                            database.CreateQuiz(user: user);
+                        }
                     }
                     
                 case "S":
