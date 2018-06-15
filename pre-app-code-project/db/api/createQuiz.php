@@ -43,3 +43,10 @@
 	//echo json_encode($response);
 
 ?>
+<form action="?" method="GET">
+	<p>Create Quiz:</p><br><br>
+	<input class="form-control" type="text" name="title" placeholder="Enter quiz-title"><br>
+	<input class="form-control" type="text" name="description" placeholder="Description of quiz"><br>
+	<input class="form-control" type="text" name="creator" placeholder="Enter creator ID"><br><br>
+	<input class="btn btn-primary" type="submit" value="Submit" name="submitQuiz">
+</form>

@@ -45,27 +45,14 @@
 	}
 
 	//echo json_encode($response);
-?>	<form>
-		
-		<div class="singupform">
-			
-			<h1>Sign up</h1>
-			<p>Please fill out the boxes to sign up!</p>
-
-			<label>Username: </label>
-			<input type="text" placeholder="Username..." name="email">
-
-			<label>Password: </label>
-			<input type="password" placeholder="Password..." name="password">
-
-			<label>E-mail: </label>
-			<input type="email" placeholder="E-mail..." name="username">
-
-			<p>By creating an account you agree to our <a href="https://i.imgflip.com/2c9kfq.jpg">Terms & Privacy</a>.</p>
-   		 	<button type="submit" class="registerbtn">Register</button>
-  		
-
-
-		</div>
-
-	</form>
+?>	
+<form action="?" method="GET">
+	<p>Create user:</p><br><br>
+	<input class="form-control" type="text" placeholder="First name" name="fname"><br>
+	<input class="form-control" type="text" placeholder="Middle name (optional)" name="midname"><br>
+	<input class="form-control" type="text" placeholder="Last name" name="lname"><br>
+	<input class="form-control" type="text" placeholder="Username" name="uname"><br>
+	<input class="form-control" type="password" placeholder="Password..." name="inputPassword"><br>
+	<input class="form-control" type="email" placeholder="E-mail" name="inputMail"><br><br>
+	<input class="btn btn-primary" type="submit" name="submitUser" value="Submit">
+</form>

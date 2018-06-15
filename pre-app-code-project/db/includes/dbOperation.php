@@ -25,9 +25,9 @@
 		}
 
 		// 
-		public function createQuestion($quizId, $correctAnswer, $text) {
-			$stmt = $this->conn->prepare("INSERT INTO Questions(quizID, correctAnswer, text) VALUES(?, ?, ?)");
-	        $stmt->bind_param("iis", $quizId, $correctAnswer, $text);
+		public function createQuestion($quizId, $correctAnswer, $text, $trueAnswer, $points) {
+			$stmt = $this->conn->prepare("INSERT INTO Questions(quizID, correctAnswer, trueCorrectAnswerID, text, points) VALUES(?, ?, ?, ?, ?)");
+	        $stmt->bind_param("iisii", $quizId, $correctAnswer, $text, $trueAnswer, $points);
         	
         	$result = $stmt->execute();
         	$stmt->close();
