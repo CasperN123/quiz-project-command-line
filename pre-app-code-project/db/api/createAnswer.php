@@ -45,11 +45,9 @@
 
 
 <form action="?" method="get">
-  Create answer:<br>
+  <p>Create answer:</p><br><br>
   <input type="text" name="text" placeholder="Type the answer text" class="form-control"><br>
-  Question id:<br>
   <input type="text" name="id" placeholder="Type question id" class="form-control"><br>
-  Answer ID:<br>
-  <input type="text" name="answerID" placeholder="Type the answerID" class="form-control"><br>
+  <input type="text" name="answerID" placeholder="Type the answerID" class="form-control"><br><br>
   <input type="submit" value="Submit" class="btn btn-primary">
 </form>

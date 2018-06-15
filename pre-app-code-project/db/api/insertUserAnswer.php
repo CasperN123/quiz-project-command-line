@@ -43,3 +43,10 @@
 	//echo json_encode($response);
 
 ?>
+<form action="?" method="GET">
+	<p>Insert user answer:<p><br><br>
+	<input class="form-control" type="text" name="id" placeholder="Enter question ID"><br>
+	<input class="form-control" type="text" name="userID" placeholder="Enter user ID"><br>
+	<input class="form-control" type="text" name="answer" placeholder="Enter user answer ID"><br><br>
+	<input class="btn btn-primary" type="submit" value="Submit" name="submitUserAnswer">
+</form>
