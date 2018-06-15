@@ -3,7 +3,7 @@
 
 	$example = "http://localhost:8080/dbConn/api/createUser.php?fname=ben&midname=ja&lname=min&uname=bensand&pass=1234&mail=hej@meddig.dk";
 
-	if($_SERVER['REQUEST_METHOD']=='GET'){
+	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['id'])){
  
 	    //getting values
 	    $firstname = $_GET['fname'];
@@ -42,8 +42,30 @@
 		$password = null;
 		$email = null;
 
-		echo "Parameters have not been set!";
 	}
 
-	echo json_encode($response);
-?>
+	//echo json_encode($response);
+?>	<form>
+		
+		<div class="singupform">
+			
+			<h1>Sign up</h1>
+			<p>Please fill out the boxes to sign up!</p>
+
+			<label>Username: </label>
+			<input type="text" placeholder="Username..." name="email">
+
+			<label>Password: </label>
+			<input type="password" placeholder="Password..." name="password">
+
+			<label>E-mail: </label>
+			<input type="email" placeholder="E-mail..." name="username">
+
+			<p>By creating an account you agree to our <a href="https://i.imgflip.com/2c9kfq.jpg">Terms & Privacy</a>.</p>
+   		 	<button type="submit" class="registerbtn">Register</button>
+  		
+
+
+		</div>
+
+	</form>

@@ -3,7 +3,7 @@
 
 	$example = "http://localhost:8080/dbConn/api/createQuiz.php?title=quiz1&description=hej&creator=2";
 
-	if($_SERVER['REQUEST_METHOD']=='GET'){
+	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['id'])){
  
 	    //getting values
 	    $title = $_GET['title'];
@@ -37,10 +37,9 @@
 		$description = null;
 		$creator = null;
 
-		echo "Parameters have not been set!";
 	}
 
 
-	echo json_encode($response);
+	//echo json_encode($response);
 
 ?>

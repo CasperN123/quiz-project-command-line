@@ -3,7 +3,7 @@
 
 	$example = "http://localhost:8080/dbConn/api/insertUserAnswer.php?id=1&answer=1&userID=1";
 
-	if($_SERVER['REQUEST_METHOD']=='GET'){
+	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['id'])){
  
 	    // getting values
 	    $questionID = $_GET['id'];
@@ -37,10 +37,9 @@
 		$userAnswer = null;
 		$userID = null;
 
-		echo "Parameters have not been set!";
 	}
 
 
-	echo json_encode($response);
+	//echo json_encode($response);
 
 ?>

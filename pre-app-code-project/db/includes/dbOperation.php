@@ -38,9 +38,9 @@
         	}
 		}
 
-		public function createAnswer($questionID, $text) {
-			$stmt = $this->conn->prepare("INSERT INTO Answers(questionID, answerText) VALUES(?, ?)");
-			$stmt->bind_param("is", $questionID, $text);
+		public function createAnswer($questionID, $text, $answerLocalID) {
+			$stmt = $this->conn->prepare("INSERT INTO Answers(questionID, answerText, answerLocalID) VALUES(?, ?, ?)");
+			$stmt->bind_param("isi", $questionID, $text, $answerLocalID);
 
 			$result = $stmt->execute();
 			$stmt->close();
