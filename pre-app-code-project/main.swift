@@ -4,6 +4,7 @@
 
 import Foundation
 
+
 class Quiz {
     
     
@@ -445,17 +446,17 @@ class Database {
         let selectedQuiz = readLine()
             switch selectedQuiz {
            
-            case "1":
-                print("\(quizTable.index(after: 0))")
-            case "2":
-                print("\(quizTable.index(after: 1))")
-            case "3":
-                print("\(quizTable.index(after: 2))")
-            case "4":
-                print("\(quizTable.index(after: 3))")
+                case "1":
+                    print("\(quizTable.index(after: 0))")
+                case "2":
+                    print("\(quizTable.index(after: 1))")
+                case "3":
+                    print("\(quizTable.index(after: 2))")
+                case "4":
+                    print("\(quizTable.index(after: 3))")
 
-            default:
-                print("If you wish to return to main menu press x")
+                default:
+                    print("If you wish to return to main menu press x")
                 
             }
         }
