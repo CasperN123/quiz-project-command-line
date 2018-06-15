@@ -5,6 +5,7 @@
 	$createUser = "http://localhost:8080/dbConn/api/createUser.php?fname=ben&midname=ja&lname=min&uname=bensand&pass=1234&mail=hej@meddig.dk";
 	$insertUserAnswer = "http://localhost:8080/dbConn/api/insertUserAnswer.php?id=1&answer=1&userID=1";
 
+	require_once 'includes/dbOperation.php';
 
 ?>
 <html>

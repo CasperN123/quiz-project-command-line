@@ -3,7 +3,7 @@
 
 	$example = "http://localhost:8080/dbConn/api/createQuiz.php?title=quiz1&description=hej&creator=2";
 
-	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['id'])){
+	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['title'])){
  
 	    //getting values
 	    $title = $_GET['title'];
@@ -11,7 +11,7 @@
 	    $creator = $_GET['creator'];
 	 
 	    //including the db operation file
-	    require_once '../includes/dbOperation.php';
+	    require_once 'includes/dbOperation.php';
 	 
 	    $db = new dbOperation();
 		if(isset($_GET["title"], $_GET["description"], $_GET["creator"]))
@@ -49,4 +49,5 @@
 	<input class="form-control" type="text" name="description" placeholder="Description of quiz"><br>
 	<input class="form-control" type="text" name="creator" placeholder="Enter creator ID"><br><br>
 	<input class="btn btn-primary" type="submit" value="Submit" name="submitQuiz">
+ 	<input type="text" name="page" value="createQuiz" hidden>
 </form>

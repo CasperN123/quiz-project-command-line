@@ -3,7 +3,7 @@
 
 	$example = "http://localhost:8080/dbConn/api/createUser.php?fname=ben&midname=ja&lname=min&uname=bensand&pass=1234&mail=hej@meddig.dk";
 
-	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['id'])){
+	if($_SERVER['REQUEST_METHOD']=='GET' && isset($_GET['fname'])){
  
 	    //getting values
 	    $firstname = $_GET['fname'];
@@ -14,7 +14,7 @@
 	    $email = $_GET['mail'];
 	 
 	    //including the db operation file
-	    require_once '../includes/dbOperation.php';
+	    require_once 'includes/dbOperation.php';
 	 
 	    $db = new dbOperation();
 		if(isset($_GET["fname"], $_GET["midname"], $_GET["lname"], $_GET["uname"], $_GET["pass"], $_GET["mail"]))
@@ -52,7 +52,9 @@
 	<input class="form-control" type="text" placeholder="Middle name (optional)" name="midname"><br>
 	<input class="form-control" type="text" placeholder="Last name" name="lname"><br>
 	<input class="form-control" type="text" placeholder="Username" name="uname"><br>
-	<input class="form-control" type="password" placeholder="Password..." name="inputPassword"><br>
-	<input class="form-control" type="email" placeholder="E-mail" name="inputMail"><br><br>
+	<input class="form-control" type="password" placeholder="Password..." name="pass"><br>
+	<input class="form-control" type="email" placeholder="E-mail" name="mail"><br><br>
 	<input class="btn btn-primary" type="submit" name="submitUser" value="Submit">
+	<input type="text" name="page" value="createUser" hidden>
+
 </form>

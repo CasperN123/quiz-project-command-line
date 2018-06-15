@@ -11,13 +11,13 @@
 	    $text = $_GET['text'];
 	 
 	    // including the db operation file
-	    require_once '../includes/dbOperation.php';
+	    require_once 'includes/dbOperation.php';
 
 	    $db = new dbOperation();
 		if(isset($_GET["id"], $_GET["answer"], $_GET["text"], $_GET['trueAnswer'], $_GET['points']))
 		{
 		    //inserting values 
-			if($db->createQuestion($quizId, $correctAnswer, $text)){
+			if($db->createQuestion($quizId, $correctAnswer, $text, $trueAnswer, $points)){
 			    $response['error']=false;
 			    $response['message']='Quiz added successfully';
 			} 
@@ -45,8 +45,10 @@
 <form action="?" method="GET">
 	<p>Create Question:</p><br><br>	
 	<input class="form-control" type="text" name="text" placeholder="Type question here"><br>
+	<input class="form-control" type="text" name="id" placeholder="Type quiz ID"><br>
 	<input class="form-control" type="text" name="answer" placeholder="Insert answer ID"><br>
 	<input class="form-control" type="text" name="trueAnswer" placeholder="Insert true answer ID"><br>
 	<input class="form-control" type="text" name="points" placeholder="Amount of points for answering correct"><br><br>
 	<input class="btn btn-primary" type="submit" name="submitQuestion" value="Submit">
+  	<input type="text" name="page" value="createQuestion" hidden>
 </form>

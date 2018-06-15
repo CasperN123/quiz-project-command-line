@@ -11,10 +11,10 @@
 	    $answerLocalID = $_GET['answerID'];
 	 
 	    // including the db operation file
-	    require_once '../includes/dbOperation.php';
+	    require_once 'includes/dbOperation.php';
 
 	    $db = new dbOperation();
-		if(isset($_GET["id"], $_GET["text"]))
+		if(isset($_GET["id"], $_GET["text"], $_GET['answerID']))
 		{
 		    //inserting values 
 			if($db->createAnswer($questionID, $text, $answerLocalID)){
@@ -50,4 +50,5 @@
   <input type="text" name="id" placeholder="Type question id" class="form-control"><br>
   <input type="text" name="answerID" placeholder="Type the answerID" class="form-control"><br><br>
   <input type="submit" value="Submit" class="btn btn-primary">
+  <input type="text" name="page" value="createAnswer" hidden>
 </form>

@@ -11,7 +11,7 @@
 	    $userID = $_GET['userID'];
 	 
 	    // including the db operation file
-	    require_once '../includes/dbOperation.php';
+	    require_once 'includes/dbOperation.php';
 
 	    $db = new dbOperation();
 		if(isset($_GET['id'], $_GET['answer'], $_GET['userID']))
@@ -49,4 +49,5 @@
 	<input class="form-control" type="text" name="userID" placeholder="Enter user ID"><br>
 	<input class="form-control" type="text" name="answer" placeholder="Enter user answer ID"><br><br>
 	<input class="btn btn-primary" type="submit" value="Submit" name="submitUserAnswer">
+	<input type="text" name="page" value="insertUserAnswer" hidden>
 </form>
